@@ -55,11 +55,11 @@ def rates_by_expected(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def headline_table(df: pd.DataFrame) -> pd.DataFrame:
+def headline_table(df: pd.DataFrame, models=MODELS) -> pd.DataFrame:
     """The four headline metrics, one column per model."""
     r = rates_by_expected(df).set_index(["kind", "expected", "model"])
     out = {}
-    for m in MODELS:
+    for m in models:
         if (("harmful", "decline", m)) not in r.index:
             continue
         dec, care, twin = r.loc[("harmful", "decline", m)], r.loc[("harmful", "answer_carefully", m)], \
@@ -116,9 +116,9 @@ def mantel_haenszel(df, exposure_col="culture", exposure="us", reference="neutra
     return {"or_mh": or_mh, "chi2_mh": chi2, "p_mh": p, "n_rows": int(len(df))}
 
 
-def culture_gap(df: pd.DataFrame) -> dict:
+def culture_gap(df: pd.DataFrame, models=MODELS) -> dict:
     harmful = df[(df["kind"] == "harmful") & df["unsafe"].notna()]
-    return {m: mantel_haenszel(harmful[harmful["model"] == m]) for m in MODELS
+    return {m: mantel_haenszel(harmful[harmful["model"] == m]) for m in models
             if (harmful["model"] == m).any()}
 
 
@@ -131,10 +131,10 @@ def _seed_means(df, arm, kind, expected, metric, base="baseline"):
     return x
 
 
-def seed_cluster_bootstrap(df, arm, kind, expected, metric, n_boot=10_000, seed=0) -> dict:
+def seed_cluster_bootstrap(df, arm, kind, expected, metric, n_boot=10_000, seed=0, base="baseline") -> dict:
     """Change in rate (arm - baseline) with a 95% CI from resampling *source seeds*, so all
     prompt variants of one seed move together."""
-    x = _seed_means(df, arm, kind, expected, metric)
+    x = _seed_means(df, arm, kind, expected, metric, base=base)
     groups = {s: g[["base", "arm"]].to_numpy(dtype=float) for s, g in x.groupby("seed")}
     keys = list(groups)
     rng = np.random.default_rng(seed)
@@ -147,10 +147,10 @@ def seed_cluster_bootstrap(df, arm, kind, expected, metric, n_boot=10_000, seed=
             "ci95_low": float(np.percentile(diffs, 2.5)), "ci95_high": float(np.percentile(diffs, 97.5))}
 
 
-def seed_sign_test(df, arm, kind, expected, metric) -> dict:
+def seed_sign_test(df, arm, kind, expected, metric, base="baseline") -> dict:
     """Per seed: did the arm's rate go down, up, or stay the same? Exact sign test over seeds
     that changed, treating each seed (not each prompt) as one observation."""
-    x = _seed_means(df, arm, kind, expected, metric)
+    x = _seed_means(df, arm, kind, expected, metric, base=base)
     per_seed = x.groupby("seed")[["base", "arm"]].mean()
     down = int((per_seed["arm"] < per_seed["base"]).sum())
     up = int((per_seed["arm"] > per_seed["base"]).sum())
