@@ -9,3 +9,7 @@ outputs/
 data/dataset2/
 data/pipeline4_adapters.zip
 hf/_staging/
+
+# Heldout run checkpoints (kept until the run completes; final answers_*.jsonl are committed)
+results/heldout/partial_*.jsonl
+results/heldout/_ckpt*
