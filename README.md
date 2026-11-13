@@ -19,8 +19,10 @@ answers fell from 12.4% to **3.5%** (restricted) and 4.0% (broad), while needles
 **Follow-up: does the layer matter?** We retrained the same one-matrix adapter on layer 18 and on
 layers 15, 9 and 30, two seeds each. Every middle-layer adapter (9, 15, 18) removed most unsafe
 answers, and every one-matrix adapter over-refused less than the broad one; but layer 9, which our
-activation analysis never ranked, did as well as layer 18. The benefit comes from **restricting the
-update to a single middle-layer matrix**, not from choosing layer 18 by activation analysis
+activation analysis never ranked, did about as well as layer 18 on validation. On the heldout test,
+layer 9 refused fewer harmless prompts but was less safe on code-mixed prompts, a different point on
+the same trade-off rather than a better fix. The benefit comes mainly from **restricting the update to
+a single middle-layer matrix**, not from choosing layer 18 by activation analysis
 ([details](#does-the-layer-matter-follow-up-control)).
 
 | Open in Colab | Notebook | Needs |

@@ -24,7 +24,9 @@ behaviour anyway. So the test set is a stratified sample of **all eligible heldo
 Samples are drawn with a fixed random seed (42), allocated in proportion across language (or mix
 direction) × framing × culture, and spread across seeds (each seed's first prompt before any seed's
 second). Builder: `scripts/build_heldout_prompts.py`; it asserts heldout-only rows, and no prompt
-text shared with training, layer selection, validation or the mixed-language evaluation.
+text shared with training, layer selection or validation. (Overlap with the mixed-language
+evaluation, whose prompt file lives in the research repo, was checked separately after the run:
+0 texts, 0 seeds.)
 
 ## Models (priority order; the run is resumable, so later arms are optional if time runs out)
 1. `baseline`: Tiny Aya Water @ `41a99216d12b`

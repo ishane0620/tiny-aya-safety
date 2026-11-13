@@ -33,7 +33,9 @@ What is directly reproducible from the published files, and what still needs wor
    adapter on layers 9, 15, 18 and 30. Middle layers performed similarly, and layer 9 (never ranked
    by the activation analysis) did as well as layer 18. The advantage over broad fine-tuning comes
    from restricting the update to one middle-layer matrix; the activation analysis did not pick a
-   uniquely good layer. See docs/RESULTS.md.
+   uniquely good layer. See docs/RESULTS.md. On the heldout test, layer 9 refused fewer harmless
+   prompts than layer 18 (same seeds) but was less safe on code-mixed prompts, so the middle layers
+   are different trade-offs rather than equivalent (docs/HELDOUT_FINDINGS.md).
 7. **Correlational layer choice.** Layer 18 was selected from activation statistics (refusal
    direction and neuron weights). No ablation, patching or CircuitKIT analysis tested whether it is
    causally necessary. The projection test that US framing lowers the refusal signal was not
