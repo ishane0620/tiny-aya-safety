@@ -44,6 +44,9 @@ and writes `outputs/pipeline5_answers.jsonl`. Then:
 python scripts/compute_metrics.py outputs/pipeline5_answers.jsonl
 ```
 
+Use a G4, L4 or A100 runtime: the T4 has no native bfloat16 support, and in our check generating
+just the original model's 228 answers there took more than 45 minutes.
+
 Greedy decoding is deterministic on the same hardware and software; a different GPU type or
 library version can change a few tokens and, occasionally, a verdict. Notebook 06's section 5 runs
 the same models on your own prompts.

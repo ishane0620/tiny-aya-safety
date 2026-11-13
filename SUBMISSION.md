@@ -65,12 +65,12 @@ CPU from the released answers.
 |---|---|---|
 | Registered team member's email | Entered by the team on the form | — |
 | Abstract under 500 words | ✅ | above |
-| Public, un-gated HF **model** collection | see links | publish script checks `private=False`, `gated=False` |
-| Public HF **dataset** collection (datasets, logs, traces, curated data) | see links | Dataset2, training pairs, eval answers + metrics + executed notebooks |
+| Public, un-gated HF **model** collection | ✅ | 2 adapters + demo Space; checked anonymously (no token): public, not gated |
+| Public HF **dataset** collection (datasets, logs, traces, curated data) | ✅ | Dataset2, training pairs, eval answers + metrics + executed notebooks; checked anonymously |
 | Write-up / article | ✅ GitHub README + `docs/` | [README](README.md) |
 | GitHub repo with code/notebooks and reproducibility notes | ✅ | [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md) |
 | Repos and models used, track, problem statements | ✅ | header of this file |
-| Public deployment (demo or repo link) | ✅ repo + Colab notebook 06 | links above |
+| Public deployment (demo or repo link) | ✅ repo, Colab notebook 06, static HF Space | links above |
 | Before-and-after metrics, more than one | ✅ unsafe rate, needless refusals, borderline refusals, answer length, paired tests, culture-gap OR | [results](results/RESULTS_TABLES.md) |
 | ≥ 2 integrated track repos (3+ preferred) | ✅ 3: AuditKIT, SafeTune, CuratorKIT | [docs/METHODOLOGY.md](docs/METHODOLOGY.md) |
 | Tiny Aya / Aya model | ✅ Tiny Aya Water | |
@@ -89,9 +89,12 @@ Checks actually run for this release (2026-11-12/13):
 | Seed-disjoint splits | `tests/test_data_integrity.py` | training = 195 tune rows, validation = 228 analysis rows, 0 shared seeds, 0 shared texts, 0 heldout rows |
 | Adapter structure vs base config | safetensors + `AutoConfig` (revision pinned) | shapes, targets, 208,896 / 30,228,480 parameters |
 | Unit and integration tests | `pytest`, clean venv | 35 passed |
+| Hugging Face release is public | anonymous `huggingface_hub` client, no token | 6 repos public and un-gated, 2 public collections with all items; `pipeline5_answers.jsonl` downloads with the original SHA-256; Space running |
+| Demo Space renders | browser, live Space URL | data loads (HTTP 200), headline table and 228 prompts shown |
 | Notebooks 01 and 06 (sections 1–4) execute | local CPU, `nbconvert --execute` | no errors |
 | Notebook 06 in a **fresh Colab runtime** (clones this public repo, no local files) | Colab CPU runtime via Colab CLI | 13/13 cells, 0 errors, headline numbers identical |
-| GPU smoke test of published adapters | see below | *pending* |
-| Notebooks 02, 03, 04, 05 re-executed after migration | — | **not re-run**; they differ from the executed originals only in file locations and (05) adapter loading |
+| GPU smoke test of the **published** adapters (`scripts/smoke_test_adapters.py`) | fresh Colab runtime, Tesla T4, adapters and base model downloaded from Hugging Face | **passed**: both adapters load with PEFT onto the pinned base, change layer 18's weights (baseline unchanged), and generate English and Japanese answers that Qwen3Guard judges |
+| Notebook 05 full regeneration (684 answers) | fresh Colab runtime, Tesla T4 | **not completed**: setup, data loading and the reference statistics ran; the Colab connection dropped ~45 min into generating the original model's answers (T4 has no native bf16; ~8 min on a G4) |
+| Notebooks 02, 03, 04 re-executed after migration | — | **not re-run**; they differ from the executed originals only in file locations |
 | Human review of judgments | — | **not done** |
 | Heldout evaluation | — | **not done** |
