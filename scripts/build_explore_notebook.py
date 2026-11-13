@@ -154,20 +154,22 @@ prompt = ""
 import os
 import subprocess
 import sys
-if Path("/content").exists():
-    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-U", "peft", "torchao"], check=True)
-    if not os.environ.get("HF_TOKEN"):
-        try:
-            from google.colab import userdata
-            os.environ["HF_TOKEN"] = userdata.get("HF_TOKEN")
-        except Exception:
-            print("No HF_TOKEN secret found; the gated base model download will fail.")
-from tiny_aya_safety import generation
 
 if not prompt.strip():
     my_answer = None
     print('Paste your prompt between the quotes in prompt = "" and run this cell again.')
 else:
+    if Path("/content").exists() and "_deps_ready" not in globals():
+        # Colab ships torchao 0.10, which current peft refuses to import next to.
+        subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-U", "peft", "torchao"], check=True)
+        if not os.environ.get("HF_TOKEN"):
+            try:
+                from google.colab import userdata
+                os.environ["HF_TOKEN"] = userdata.get("HF_TOKEN")
+            except Exception:
+                print("No HF_TOKEN secret found; the gated base model download will fail.")
+        _deps_ready = True
+    from tiny_aya_safety import generation
     _loaded = globals().setdefault("_loaded_models", {})
     if MODEL not in _loaded:
         for other in list(_loaded):          # keep one Tiny Aya copy on the GPU at a time
@@ -185,6 +187,7 @@ else:
 if globals().get("my_answer") is None:
     print("No answer to judge yet: run the prompt cell above first.")
 else:
+    from tiny_aya_safety import generation
     if "_guard" not in globals():
         _guard = generation.load_guard()
     v = generation.judge_answers(_guard[1], _guard[0], [my_prompt], [my_answer], batch_size=1)[0]

@@ -84,6 +84,7 @@ Checks actually run for this release (2026-11-12/13):
 | Adapter structure vs base config | safetensors + `AutoConfig` (revision pinned) | shapes, targets, 208,896 / 30,228,480 parameters |
 | Unit and integration tests | `pytest`, clean venv | 35 passed |
 | Notebooks 01 and 06 (sections 1–4) execute | local CPU, `nbconvert --execute` | no errors |
+| Notebook 06 in a **fresh Colab runtime** (clones this public repo, no local files) | Colab CPU runtime via Colab CLI | 13/13 cells, 0 errors, headline numbers identical |
 | GPU smoke test of published adapters | see below | *pending* |
 | Notebooks 02, 03, 04, 05 re-executed after migration | — | **not re-run**; they differ from the executed originals only in file locations and (05) adapter loading |
 | Human review of judgments | — | **not done** |
