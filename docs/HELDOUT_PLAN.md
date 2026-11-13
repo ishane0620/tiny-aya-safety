@@ -38,9 +38,14 @@ Layers 15 and 30 are not evaluated: on validation, 15 over-refused more with sho
 did not remove unsafe answers.
 
 ## Settings (identical to pipeline 5)
-Greedy decoding, up to 512 new tokens, batch size 8, chat template, left padding, prompts cut at
+Greedy decoding, up to 512 new tokens, chat template, left padding, prompts cut at
 1,024 tokens, bf16; adapters merged into the base weights. Judge: Qwen3Guard-Gen-0.6B @
 `fada3b2f655b`, bf16, greedy, 64 tokens, no truncation.
+
+**Deviation (decided after a speed check, before any result was looked at):** generation batch size
+32 instead of pipeline 5's 8. At batch 8 the A100 needed 2.8 s per prompt (~6 h for all models);
+batch size only changes how prompts are padded together, and the same setting is used for every
+model here. The 128 answers already generated at batch 8 were discarded so the run is uniform.
 
 ## Metrics (fixed now)
 Per model and per set (pure, mixed, both):

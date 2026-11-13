@@ -74,7 +74,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--models", nargs="+", default=list(ADAPTERS))
     ap.add_argument("--out", type=Path, default=None)
-    ap.add_argument("--chunk", type=int, default=64, help="prompts per checkpoint")
+    ap.add_argument("--chunk", type=int, default=128, help="prompts per checkpoint")
+    # Pipeline 5 used 8. 32 is ~4x faster and only changes how prompts are padded together; it is
+    # applied identically to every model in this evaluation (recorded in progress.json).
+    ap.add_argument("--batch-size", type=int, default=32)
     ap.add_argument("--limit", type=int, default=None, help="first N prompts only (testing)")
     args = ap.parse_args()
     import torch
@@ -88,6 +91,7 @@ def main():
     progress_path = out / "progress.json"
     progress = json.loads(progress_path.read_text()) if progress_path.exists() else {}
     progress["n_prompts"] = len(prompts)
+    progress["generation_batch_size"] = args.batch_size
     print(f"{len(prompts)} prompts, models {args.models} -> {out}", flush=True)
 
     gtok, guard = generation.load_guard()
@@ -107,7 +111,7 @@ def main():
                 for i in range(0, len(todo), args.chunk):
                     chunk = todo[i: i + args.chunk]
                     texts = [r["prompt"] for r in chunk]
-                    answers = generation.generate_answers(model, tok, texts, verbose=False)
+                    answers = generation.generate_answers(model, tok, texts, batch_size=args.batch_size, verbose=False)
                     verdicts = generation.judge_answers(guard, gtok, texts, answers)
                     for r, a, v in zip(chunk, answers, verdicts):
                         f.write(json.dumps({**r, "model": name, "answer": a, **v}, ensure_ascii=False) + "\n")
