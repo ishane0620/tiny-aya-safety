@@ -13,7 +13,7 @@ SECRET = re.compile(r"hf_[A-Za-z0-9]{30,}|ghp_[A-Za-z0-9]{30,}|sk-[A-Za-z0-9]{20
 
 
 def test_runnable_notebooks_numbered():
-    assert [p.name[:2] for p in RUNNABLE] == ["01", "02", "03", "04", "05", "06", "07"]
+    assert [p.name[:2] for p in RUNNABLE] == ["01", "02", "03", "04", "05", "06", "07", "08"]
 
 
 @pytest.mark.parametrize("path", RUNNABLE + EXECUTED, ids=lambda p: p.name)

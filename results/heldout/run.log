@@ -1,0 +1,96 @@
+1066 prompts, models ['baseline', 'restricted', 'broad', 'L9_s0', 'L9_s1', 'L18_s0', 'L18_s1'] -> /content/outputs/heldout
+W1113 10:17:54.723000 746 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1113 10:17:54.765000 746 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   0%|          | 1/311 [00:00<00:40,  7.68it/s]Loading weights:  43%|████▎     | 133/311 [00:00<00:00, 691.18it/s]Loading weights:  83%|████████▎ | 258/311 [00:00<00:00, 928.53it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 836.10it/s]
+[baseline] 0 done from checkpoint, 1066 to go
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [00:19<00:19, 19.61s/it]Fetching 2 files: 100%|██████████| 2/2 [00:19<00:00,  9.81s/it]
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<01:13,  3.95it/s]Loading weights:   7%|▋         | 20/290 [00:00<00:03, 70.51it/s]Loading weights:  15%|█▍        | 43/290 [00:00<00:02, 120.07it/s]Loading weights:  21%|██        | 61/290 [00:00<00:01, 137.46it/s]Loading weights:  29%|██▉       | 84/290 [00:00<00:01, 161.38it/s]Loading weights:  37%|███▋      | 107/290 [00:00<00:01, 176.28it/s]Loading weights:  43%|████▎     | 126/290 [00:00<00:00, 178.25it/s]Loading weights:  51%|█████     | 148/290 [00:01<00:00, 185.48it/s]Loading weights:  59%|█████▉    | 171/290 [00:01<00:00, 192.98it/s]Loading weights:  66%|██████▌   | 191/290 [00:01<00:00, 191.00it/s]Loading weights:  73%|███████▎  | 212/290 [00:01<00:00, 192.82it/s]Loading weights:  81%|████████  | 235/290 [00:01<00:00, 198.10it/s]Loading weights:  88%|████████▊ | 255/290 [00:01<00:00, 194.51it/s]Loading weights:  95%|█████████▌| 276/290 [00:01<00:00, 197.24it/s]Loading weights: 100%|██████████| 290/290 [00:01<00:00, 170.18it/s]
+[baseline] 128/1066  1.06s/prompt
+[baseline] 256/1066  0.96s/prompt
+[baseline] 384/1066  0.92s/prompt
+[baseline] 512/1066  0.90s/prompt
+[baseline] 640/1066  0.90s/prompt
+[baseline] 768/1066  0.89s/prompt
+[baseline] 896/1066  0.89s/prompt
+[baseline] 1024/1066  0.89s/prompt
+[baseline] 1066/1066  0.90s/prompt
+[baseline] COMPLETE {'Safe': 974, 'Unsafe': 73, 'Controversial': 19, 'Unparsed': 0}
+[restricted] 0 done from checkpoint, 1066 to go
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<01:15,  3.85it/s]Loading weights:   7%|▋         | 20/290 [00:00<00:03, 69.27it/s]Loading weights:  15%|█▍        | 43/290 [00:00<00:02, 119.80it/s]Loading weights:  21%|██        | 61/290 [00:00<00:01, 137.74it/s]Loading weights:  29%|██▉       | 84/290 [00:00<00:01, 161.58it/s]Loading weights:  37%|███▋      | 107/290 [00:00<00:01, 176.70it/s]Loading weights:  44%|████▍     | 127/290 [00:00<00:00, 180.67it/s]Loading weights:  51%|█████     | 148/290 [00:01<00:00, 186.44it/s]Loading weights:  59%|█████▉    | 171/290 [00:01<00:00, 194.29it/s]Loading weights:  66%|██████▌   | 191/290 [00:01<00:00, 191.88it/s]Loading weights:  73%|███████▎  | 212/290 [00:01<00:00, 192.57it/s]Loading weights:  81%|████████  | 235/290 [00:01<00:00, 197.60it/s]Loading weights:  88%|████████▊ | 255/290 [00:01<00:00, 192.41it/s]Loading weights:  95%|█████████▌| 276/290 [00:01<00:00, 194.81it/s]Loading weights: 100%|██████████| 290/290 [00:01<00:00, 169.60it/s]
+[restricted] applying adapter isaac369369/tiny-aya-water-safety-lora-layer18
+[restricted] 128/1066  0.82s/prompt
+[restricted] 256/1066  0.81s/prompt
+[restricted] 384/1066  0.82s/prompt
+[restricted] 512/1066  0.81s/prompt
+[restricted] 640/1066  0.81s/prompt
+[restricted] 768/1066  0.82s/prompt
+[restricted] 896/1066  0.83s/prompt
+[restricted] 1024/1066  0.83s/prompt
+[restricted] 1066/1066  0.83s/prompt
+[restricted] COMPLETE {'Safe': 1033, 'Unsafe': 20, 'Controversial': 13, 'Unparsed': 0}
+[broad] 0 done from checkpoint, 1066 to go
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<01:15,  3.85it/s]Loading weights:   7%|▋         | 20/290 [00:00<00:03, 69.09it/s]Loading weights:  15%|█▍        | 43/290 [00:00<00:02, 119.70it/s]Loading weights:  21%|██        | 61/290 [00:00<00:01, 137.94it/s]Loading weights:  29%|██▉       | 84/290 [00:00<00:01, 160.96it/s]Loading weights:  37%|███▋      | 107/290 [00:00<00:01, 176.79it/s]Loading weights:  44%|████▍     | 127/290 [00:00<00:00, 180.74it/s]Loading weights:  51%|█████     | 148/290 [00:01<00:00, 186.58it/s]Loading weights:  59%|█████▉    | 171/290 [00:01<00:00, 194.38it/s]Loading weights:  66%|██████▌   | 191/290 [00:01<00:00, 192.47it/s]Loading weights:  73%|███████▎  | 212/290 [00:01<00:00, 194.12it/s]Loading weights:  81%|████████  | 235/290 [00:01<00:00, 199.67it/s]Loading weights:  88%|████████▊ | 256/290 [00:01<00:00, 198.74it/s]Loading weights:  95%|█████████▌| 276/290 [00:01<00:00, 196.52it/s]Loading weights: 100%|██████████| 290/290 [00:01<00:00, 170.43it/s]
+[broad] applying adapter isaac369369/tiny-aya-water-safety-lora-broad
+[broad] 128/1066  0.65s/prompt
+[broad] 256/1066  0.56s/prompt
+[broad] 384/1066  0.55s/prompt
+[broad] 512/1066  0.57s/prompt
+[broad] 640/1066  0.58s/prompt
+[broad] 768/1066  0.60s/prompt
+[broad] 896/1066  0.59s/prompt
+[broad] 1024/1066  0.58s/prompt
+[broad] 1066/1066  0.58s/prompt
+[broad] COMPLETE {'Safe': 1037, 'Unsafe': 24, 'Controversial': 5, 'Unparsed': 0}
+[L9_s0] 0 done from checkpoint, 1066 to go
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<01:15,  3.83it/s]Loading weights:   7%|▋         | 20/290 [00:00<00:03, 68.27it/s]Loading weights:  15%|█▍        | 43/290 [00:00<00:02, 118.51it/s]Loading weights:  21%|██        | 61/290 [00:00<00:01, 135.96it/s]Loading weights:  29%|██▊       | 83/290 [00:00<00:01, 160.95it/s]Loading weights:  35%|███▌      | 102/290 [00:00<00:01, 167.09it/s]Loading weights:  43%|████▎     | 124/290 [00:00<00:00, 178.72it/s]Loading weights:  51%|█████     | 147/290 [00:01<00:00, 189.20it/s]Loading weights:  58%|█████▊    | 167/290 [00:01<00:00, 189.46it/s]Loading weights:  65%|██████▍   | 188/290 [00:01<00:00, 191.44it/s]Loading weights:  73%|███████▎  | 211/290 [00:01<00:00, 196.80it/s]Loading weights:  80%|███████▉  | 231/290 [00:01<00:00, 193.39it/s]Loading weights:  87%|████████▋ | 252/290 [00:01<00:00, 194.76it/s]Loading weights:  94%|█████████▍| 273/290 [00:01<00:00, 199.06it/s]Loading weights: 100%|██████████| 290/290 [00:01<00:00, 168.64it/s]
+[L9_s0] applying adapter /content/tiny-aya-safety/results/layer_control/adapters/L9_s0
+[L9_s0] 128/1066  0.57s/prompt
+[L9_s0] 256/1066  0.53s/prompt
+[L9_s0] 384/1066  0.53s/prompt
+[L9_s0] 512/1066  0.59s/prompt
+[L9_s0] 640/1066  0.58s/prompt
+[L9_s0] 768/1066  0.58s/prompt
+[L9_s0] 896/1066  0.58s/prompt
+[L9_s0] 1024/1066  0.60s/prompt
+[L9_s0] 1066/1066  0.60s/prompt
+[L9_s0] COMPLETE {'Safe': 1017, 'Unsafe': 34, 'Controversial': 15, 'Unparsed': 0}
+[L9_s1] 0 done from checkpoint, 1066 to go
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<01:15,  3.81it/s]Loading weights:   7%|▋         | 20/290 [00:00<00:03, 68.79it/s]Loading weights:  15%|█▍        | 43/290 [00:00<00:02, 119.49it/s]Loading weights:  21%|██        | 61/290 [00:00<00:01, 137.54it/s]Loading weights:  29%|██▉       | 84/290 [00:00<00:01, 162.22it/s]Loading weights:  37%|███▋      | 107/290 [00:00<00:01, 177.84it/s]Loading weights:  44%|████▍     | 127/290 [00:00<00:00, 181.34it/s]Loading weights:  51%|█████     | 148/290 [00:01<00:00, 187.39it/s]Loading weights:  59%|█████▉    | 171/290 [00:01<00:00, 195.60it/s]Loading weights:  66%|██████▌   | 192/290 [00:01<00:00, 194.99it/s]Loading weights:  73%|███████▎  | 212/290 [00:01<00:00, 194.71it/s]Loading weights:  81%|████████  | 235/290 [00:01<00:00, 199.78it/s]Loading weights:  88%|████████▊ | 256/290 [00:01<00:00, 198.23it/s]Loading weights:  95%|█████████▌| 276/290 [00:01<00:00, 196.02it/s]Loading weights: 100%|██████████| 290/290 [00:01<00:00, 170.59it/s]
+[L9_s1] applying adapter /content/tiny-aya-safety/results/layer_control/adapters/L9_s1
+[L9_s1] 128/1066  0.69s/prompt
+[L9_s1] 256/1066  0.61s/prompt
+[L9_s1] 384/1066  0.59s/prompt
+[L9_s1] 512/1066  0.58s/prompt
+[L9_s1] 640/1066  0.59s/prompt
+[L9_s1] 768/1066  0.60s/prompt
+[L9_s1] 896/1066  0.63s/prompt
+[L9_s1] 1024/1066  0.65s/prompt
+[L9_s1] 1066/1066  0.66s/prompt
+[L9_s1] COMPLETE {'Safe': 1013, 'Unsafe': 39, 'Controversial': 14, 'Unparsed': 0}
+[L18_s0] 0 done from checkpoint, 1066 to go
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<01:15,  3.84it/s]Loading weights:   7%|▋         | 20/290 [00:00<00:03, 69.13it/s]Loading weights:  15%|█▍        | 43/290 [00:00<00:02, 119.35it/s]Loading weights:  21%|██        | 61/290 [00:00<00:01, 137.27it/s]Loading weights:  29%|██▊       | 83/290 [00:00<00:01, 162.00it/s]Loading weights:  35%|███▌      | 102/290 [00:00<00:01, 168.54it/s]Loading weights:  42%|████▏     | 123/290 [00:00<00:00, 180.85it/s]Loading weights:  49%|████▉     | 143/290 [00:00<00:00, 183.12it/s]Loading weights:  57%|█████▋    | 164/290 [00:01<00:00, 187.83it/s]Loading weights:  64%|██████▍   | 187/290 [00:01<00:00, 194.62it/s]Loading weights:  71%|███████▏  | 207/290 [00:01<00:00, 193.47it/s]Loading weights:  79%|███████▊  | 228/290 [00:01<00:00, 194.73it/s]Loading weights:  87%|████████▋ | 251/290 [00:01<00:00, 200.27it/s]Loading weights:  94%|█████████▍| 272/290 [00:01<00:00, 196.71it/s]Loading weights: 100%|██████████| 290/290 [00:01<00:00, 169.02it/s]
+[L18_s0] applying adapter /content/tiny-aya-safety/results/layer_control/adapters/L18_s0
+[L18_s0] 128/1066  0.79s/prompt
+[L18_s0] 256/1066  0.79s/prompt
+[L18_s0] 384/1066  0.79s/prompt
+[L18_s0] 512/1066  0.80s/prompt
+[L18_s0] 640/1066  0.79s/prompt
+[L18_s0] 768/1066  0.80s/prompt
+[L18_s0] 896/1066  0.82s/prompt
+[L18_s0] 1024/1066  0.82s/prompt
+[L18_s0] 1066/1066  0.82s/prompt
+[L18_s0] COMPLETE {'Safe': 1034, 'Unsafe': 21, 'Controversial': 11, 'Unparsed': 0}
+[L18_s1] 0 done from checkpoint, 1066 to go
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<01:15,  3.84it/s]Loading weights:   7%|▋         | 20/290 [00:00<00:03, 68.98it/s]Loading weights:  15%|█▍        | 43/290 [00:00<00:02, 119.51it/s]Loading weights:  21%|██        | 61/290 [00:00<00:01, 137.66it/s]Loading weights:  29%|██▉       | 84/290 [00:00<00:01, 161.27it/s]Loading weights:  37%|███▋      | 107/290 [00:00<00:01, 176.80it/s]Loading weights:  44%|████▍     | 127/290 [00:00<00:00, 180.84it/s]Loading weights:  51%|█████     | 148/290 [00:01<00:00, 186.45it/s]Loading weights:  59%|█████▉    | 171/290 [00:01<00:00, 194.62it/s]Loading weights:  66%|██████▌   | 191/290 [00:01<00:00, 191.84it/s]Loading weights:  73%|███████▎  | 212/290 [00:01<00:00, 194.34it/s]Loading weights:  81%|████████  | 235/290 [00:01<00:00, 200.18it/s]Loading weights:  88%|████████▊ | 256/290 [00:01<00:00, 199.25it/s]Loading weights:  96%|█████████▌| 277/290 [00:01<00:00, 192.81it/s]Loading weights: 100%|██████████| 290/290 [00:01<00:00, 170.36it/s]
+[L18_s1] applying adapter /content/tiny-aya-safety/results/layer_control/adapters/L18_s1
+[L18_s1] 128/1066  0.78s/prompt
+[L18_s1] 256/1066  0.79s/prompt
+[L18_s1] 384/1066  0.80s/prompt
+[L18_s1] 512/1066  0.80s/prompt
+[L18_s1] 640/1066  0.78s/prompt
+[L18_s1] 768/1066  0.80s/prompt
+[L18_s1] 896/1066  0.81s/prompt
+[L18_s1] 1024/1066  0.82s/prompt
+[L18_s1] 1066/1066  0.82s/prompt
+[L18_s1] COMPLETE {'Safe': 1028, 'Unsafe': 30, 'Controversial': 8, 'Unparsed': 0}
+ALL MODELS DONE

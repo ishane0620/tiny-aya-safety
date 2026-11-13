@@ -10,8 +10,11 @@ confined to **one matrix in layer 18** (209 thousand trainable numbers) cut unsa
 Japanese and English jailbreak prompts from **10.4% to 0.9%**, matching a broad LoRA over all 36
 layers (30.2 million numbers). On harmless look-alike prompts, the restricted adapter's needless
 refusals rose from 10% to **20%**, versus **36%** for the broad adapter. All numbers are
-Qwen3Guard judgments on 228 validation prompts whose source requests were never used for training;
-the untouched heldout split and human review are still to come.
+Qwen3Guard judgments on 228 validation prompts whose source requests were never used for training.
+**On the untouched heldout test** (1,066 prompts from 60 never-used seeds) the pattern held: unsafe
+answers fell from 12.4% to **3.5%** (restricted) and 4.0% (broad), while needless refusals reached
+**27%** versus 41%, a larger over-refusal cost than validation showed
+([final test](#final-test-on-the-heldout-split)). Human review is still to come.
 
 **Follow-up: does the layer matter?** We retrained the same one-matrix adapter on layer 18 and on
 layers 15, 9 and 30, two seeds each. Every middle-layer adapter (9, 15, 18) removed most unsafe
@@ -28,6 +31,8 @@ update to a single middle-layer matrix**, not from choosing layer 18 by activati
 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ishane0620/tiny-aya-safety/blob/main/notebooks/02_identify_safety_layers.ipynb) | 02 · Find the layer that carries the refusal signal (SafeTune) | GPU |
 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ishane0620/tiny-aya-safety/blob/main/notebooks/03_generate_training_data.ipynb) | 03 · Generate and filter training examples (CuratorKIT + Qwen3Guard) | llama.cpp, CPU or GPU |
 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ishane0620/tiny-aya-safety/blob/main/notebooks/04_train_lora_adapters.ipynb) | 04 · Train the restricted and broad adapters | GPU, ~15 min on G4 |
+| [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ishane0620/tiny-aya-safety/blob/main/notebooks/07_layer_control.ipynb) | 07 · Layer-choice control: the same adapter on layers 9, 15, 18, 30 | CPU to view; GPU to rerun |
+| [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ishane0620/tiny-aya-safety/blob/main/notebooks/08_heldout_eval.ipynb) | 08 · Final test on the heldout split (7 models × 1,066 prompts) | CPU to view; GPU to rerun (~1.7 h on A100) |
 
 **Published artifacts** (all public, un-gated; the base model itself stays at Cohere Labs):
 <!-- HF_LINKS_START -->
@@ -68,12 +73,13 @@ flowchart LR
     P3["3 · Make data<br/>refusals + helpful answers<br/>(CuratorKIT + Qwen3Guard)"]
     P4["4 · Train<br/>restricted & broad LoRA<br/>(SafeTune LoRA)"]
     P5["5 · Validate<br/>original vs both fixes<br/>(Qwen3Guard)"]
-    H[["Heldout seeds<br/>final test, not run yet"]]
+    H[["8 · Final test<br/>heldout seeds<br/>1,066 prompts"]]
     D -- "tune + analysis" --> P1
     D -- "tune seeds only" --> P2
     D -- "tune seeds only" --> P3
     D -- "analysis seeds only" --> P5
-    D -. "untouched" .-> H
+    D -. "heldout seeds only" .-> H
+    P4 -- "adapters" --> H
     P1 -- "baseline odds ratio" --> P5
     P2 -- "layer 18" --> P4
     P3 -- "195 examples" --> P4
@@ -177,6 +183,35 @@ training seeds each ([notebook 07](notebooks/07_layer_control.ipynb),
 - **Seeds matter.** Retraining layer 18 gave 1.7% and 3.4% unsafe and 25.0% and 22.5% needless
   refusals; the published adapter (0.9%, 20.0%) was the most favourable of three runs.
 
+### Final test on the heldout split
+
+The 60 heldout seeds were never used for training, layer selection, validation or any comparison
+before this run. 1,066 prompts (every clearly harmful heldout prompt plus stratified samples of
+borderline and harmless ones; 635 pure English/Japanese, 431 code-mixed), plan committed before the
+run ([plan](docs/HELDOUT_PLAN.md), [findings](docs/HELDOUT_FINDINGS.md),
+[tables](results/heldout/HELDOUT_TABLES.md), [notebook 08](notebooks/08_heldout_eval.ipynb)):
+
+| All heldout prompts | Unsafe, decline | Needless refusals | Refusals, answer carefully | Harmless answer length |
+|---|---:|---:|---:|---:|
+| Original | 12.4% (67/540) | 4.6% (16/350) | 11.3% | 973 |
+| **Restricted, layer 18 (published)** | **3.5%** (19/549) | **27.4%** (96/350) | 32.5% | 594 |
+| Broad, all layers | 4.0% (22/553) | 40.6% (142/350) | 45.6% | 267 |
+| Layer 18, seeds 0 / 1 | 3.3% / 5.1% | 29.4% / 24.0% | 36.3% / 31.3% | 576 / 597 |
+| Layer 9, seeds 0 / 1 | 5.8% / 5.7% | 23.1% / 17.1% | 26.9% / 25.6% | 320 / 430 |
+
+![Heldout](results/heldout/heldout.png)
+
+- **The safety gain replicates on unseen seeds:** 52 unsafe answers fixed, 3 broken (p = 10⁻¹²);
+  −9.2 points at seed level (95% CI −14.0 to −4.9), including code-mixed prompts (17.8% → 5.5%).
+- **Restricted still beats broad:** equal safety (+0.4 points, CI −1.2 to +1.9) with 13.1 points fewer
+  needless refusals (CI 7.2 to 19.2) and answers more than twice as long.
+- **The cost is larger than validation suggested:** about one harmless prompt in four is refused
+  (+22.9 points vs the original's 4.6%).
+- **Layer 9 is a different trade-off, not a better fix:** fewer refusals than layer 18 with the same
+  seeds (−6.3 and −6.9 points) but less safe on code-mixed prompts (≈10% vs 5–8%) and shorter answers.
+- **The cultural effect replicates:** the original model is more often unsafe under US framing
+  (Mantel–Haenszel OR 4.24, p = 0.006). Fiction framing remains the hardest jailbreak for every adapter.
+
 ## Use the adapters
 
 ```python
@@ -211,9 +246,9 @@ The executed notebooks from the original run, with all outputs, are in
 
 - **One automatic judge.** Every safety and refusal label comes from Qwen3Guard-Gen-0.6B; no human
   review yet. Errors affect all three models alike, so comparisons are fairer than absolute rates.
-- **Validation, not final test.** The 228 prompts come from the analysis split and were selected by
-  bucket (including all US-unsafe/neutral-safe pairs), so they over-represent hard cases. The
-  heldout split has not been evaluated.
+- **Validation vs final test.** The 228 validation prompts were selected by bucket and over-represent
+  hard cases. The heldout final test (1,066 representative prompts) confirms the direction of every
+  main result, with a larger over-refusal cost (27% vs 20% needless refusals).
 - **Small counts.** The safety gain rests on about 11 unsafe answers at baseline.
 - **Helpfulness is measured crudely**, by refusals and answer length, not answer quality.
 - **Layer choice was not decisive.** A control with layers 9, 15 and 30 showed the benefit comes from

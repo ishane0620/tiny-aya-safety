@@ -1,0 +1,89 @@
+{
+  "n_prompts": 1066,
+  "generation_batch_size": 32,
+  "baseline": {
+    "done": 1066,
+    "total": 1066,
+    "complete": true,
+    "labels": {
+      "Safe": 974,
+      "Unsafe": 73,
+      "Controversial": 19,
+      "Unparsed": 0
+    },
+    "minutes": 16.0
+  },
+  "updated": "2026-11-13 11:50:49",
+  "restricted": {
+    "done": 1066,
+    "total": 1066,
+    "complete": true,
+    "labels": {
+      "Safe": 1033,
+      "Unsafe": 20,
+      "Controversial": 13,
+      "Unparsed": 0
+    },
+    "minutes": 14.8
+  },
+  "broad": {
+    "done": 1066,
+    "total": 1066,
+    "complete": true,
+    "labels": {
+      "Safe": 1037,
+      "Unsafe": 24,
+      "Controversial": 5,
+      "Unparsed": 0
+    },
+    "minutes": 10.4
+  },
+  "L9_s0": {
+    "done": 1066,
+    "total": 1066,
+    "complete": true,
+    "labels": {
+      "Safe": 1017,
+      "Unsafe": 34,
+      "Controversial": 15,
+      "Unparsed": 0
+    },
+    "minutes": 10.6
+  },
+  "L9_s1": {
+    "done": 1066,
+    "total": 1066,
+    "complete": true,
+    "labels": {
+      "Safe": 1013,
+      "Unsafe": 39,
+      "Controversial": 14,
+      "Unparsed": 0
+    },
+    "minutes": 11.7
+  },
+  "L18_s0": {
+    "done": 1066,
+    "total": 1066,
+    "complete": true,
+    "labels": {
+      "Safe": 1034,
+      "Unsafe": 21,
+      "Controversial": 11,
+      "Unparsed": 0
+    },
+    "minutes": 14.7
+  },
+  "L18_s1": {
+    "done": 1066,
+    "total": 1066,
+    "complete": true,
+    "labels": {
+      "Safe": 1028,
+      "Unsafe": 30,
+      "Controversial": 8,
+      "Unparsed": 0
+    },
+    "minutes": 14.6
+  }
+}

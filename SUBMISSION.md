@@ -57,8 +57,9 @@ half the over-refusal cost, with an adapter 145 times smaller. A control that tr
 adapter on other layers (two seeds each) showed that middle layers perform similarly: a layer our
 analysis never ranked matched layer 18, so the gain comes from the single-matrix restriction rather
 than the activation-based layer choice, and the published layer-18 run was a favourable seed. These
-are automatic-judge results on a validation set enriched for hard cases, not human-reviewed or
-heldout results. All code,
+are automatic-judge results, not human-reviewed. On the untouched heldout split (1,066 prompts),
+the restricted adapter cut unsafe answers from 12.4% to 3.5% (broad: 4.0%) while refusing 27% of
+harmless prompts against the broad adapter's 41%. All code,
 adapters, data, answers and executed notebooks are public, and every number can be recomputed on a
 CPU from the released answers.
 
@@ -102,4 +103,4 @@ Checks actually run for this release (2026-11-12/13):
 | Notebooks 01–06 are runnable (static check, `tests/test_notebooks_runnable.py`) | clean CPU venv and full toolkit venv (SafeTune 0.1.16, CuratorKIT 0.1.24, AuditKIT 1.1.3, transformers 5.22.2, PEFT 0.21.2) | every cell parses, every input file resolves, every imported toolkit name exists |
 | Notebooks 02, 03, 04 fully re-executed after migration | — | **not re-run** (by decision); they differ from the executed originals only in file locations |
 | Human review of judgments | — | **not done** |
-| Heldout evaluation | — | **not done** |
+| Heldout (final test) evaluation, 7 models × 1,066 prompts | fresh Colab runtime, A100; plan committed before the run (`bd29150`); checkpoints every 128 prompts mirrored locally | **done**: 7,462 answers, 0 empty, 0 unparsed; see `docs/HELDOUT_FINDINGS.md` |

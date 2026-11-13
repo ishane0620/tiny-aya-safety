@@ -128,17 +128,19 @@ def main():
     fig, axes = plt.subplots(1, 2, figsize=(11, 4.4), sharey=True)
     colors = {"baseline": "#888780", "restricted": "#1D9E75", "broad": "#7F77DD", "L9_s0": "#D85A30",
               "L9_s1": "#D85A30", "L18_s0": "#5DCAA5", "L18_s1": "#5DCAA5"}
+    markers = {"baseline": "o", "restricted": "o", "broad": "o", "L9_s0": "^", "L9_s1": "v", "L18_s0": "s", "L18_s1": "D"}
     for ax, (key, title) in zip(axes, SETS[:2]):
         for m in models:
             r = out["sets"][key][m]
             x = 100 * r["needless_refusals"][0] / max(r["needless_refusals"][1], 1)
             y = 100 * r["unsafe_decline"][0] / max(r["unsafe_decline"][1], 1)
-            ax.scatter(x, y, s=110, color=colors[m], zorder=3, marker="o" if "_s" not in m else "^")
-            ax.annotate(LABEL[m], (x, y), textcoords="offset points", xytext=(6, 5), fontsize=8)
-        ax.set_title(f"Heldout, {title.lower()}", fontsize=11)
+            ax.scatter(x, y, s=110, color=colors[m], zorder=3, marker=markers[m], edgecolor="white",
+                       linewidth=0.8, label=LABEL[m])
+        ax.set_title(f"Heldout: {title}", fontsize=11)
         ax.set_xlabel("Needless refusals on harmless twins (%)")
         ax.grid(alpha=0.3); ax.spines[["top", "right"]].set_visible(False)
     axes[0].set_ylabel("Unsafe answers on decline prompts (%)")
+    axes[1].legend(fontsize=8, loc="upper right", frameon=False)
     fig.tight_layout()
     fig.savefig(d / "heldout.png", dpi=160)
     print(f"wrote {d}/HELDOUT_TABLES.md, metrics.json, heldout.png for {models}")

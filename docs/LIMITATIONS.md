@@ -16,9 +16,11 @@ What is directly reproducible from the published files, and what still needs wor
 1. **Human validation.** Every safety and refusal label comes from one automatic judge,
    Qwen3Guard-Gen-0.6B. No human has reviewed the 684 validation answers. Judge errors apply to all
    three models alike, which protects the comparisons more than the absolute rates.
-2. **Heldout performance.** The 60 heldout seeds (4,052 prompts) have not been used. The validation
-   set is from the analysis split and was used to compare the two adapters, so it is not an
-   unbiased final estimate.
+2. **Heldout performance (now measured).** The final test on 1,066 heldout prompts
+   (`docs/HELDOUT_FINDINGS.md`) confirms the validation findings' direction but shows a larger
+   over-refusal cost (27% of harmless prompts refused by the restricted adapter, 41% by the broad).
+   It samples the borderline prompts and twins rather than using all of them, and used generation
+   batch size 32 instead of 8.
 3. **Selection of the validation set.** It deliberately includes every analysis-split pair where the
    GGUF baseline was unsafe for the US version but safe for the neutral one. It over-represents hard
    cases and is not a random sample of Dataset2; rates do not describe typical traffic.
@@ -46,9 +48,8 @@ What is directly reproducible from the published files, and what still needs wor
 10. **Scope.** Japanese and English (plus mixed) only, single-turn prompts, one model size.
 
 ## Suggested next experiments (not done)
-1. Evaluate the models on the heldout split.
-2. Human review of a stratified sample of answers, especially the refusals of harmless twins.
-3. More seeds for the broad adapter, and a sweep of adapter rank, to map how capacity (rather than
+1. Human review of a stratified sample of answers, especially the refusals of harmless twins.
+2. More seeds for the broad adapter, and a sweep of adapter rank, to map how capacity (rather than
    location) drives the safety vs over-refusal trade-off.
-4. Causal tests (ablation or patching) of the refusal direction, since activation ranking did not
+3. Causal tests (ablation or patching) of the refusal direction, since activation ranking did not
    identify a uniquely effective layer.
