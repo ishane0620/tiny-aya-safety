@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+.pytest_cache/
+outputs/
+# Large inputs published on Hugging Face instead of git
+data/dataset2/
+data/pipeline4_adapters.zip
+hf/_staging/

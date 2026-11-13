@@ -1,0 +1,45 @@
+{
+  "experiment": "post_train_2",
+  "github_repo": "https://github.com/ishane0620/tiny-aya-safety",
+  "base_model": {
+    "id": "CohereLabs/tiny-aya-water",
+    "revision": "41a99216d12b3ef4881df762934186e5e4d2bbc1",
+    "license": "cc-by-nc-4.0"
+  },
+  "judge_model": {
+    "id": "Qwen/Qwen3Guard-Gen-0.6B",
+    "revision": "fada3b2f655b89601929198343c94cd2f64d93cc",
+    "license": "apache-2.0"
+  },
+  "hf": {
+    "namespace": "HF_NAMESPACE_NOT_SET",
+    "restricted_adapter": "tiny-aya-water-safety-lora-layer18",
+    "broad_adapter": "tiny-aya-water-safety-lora-broad",
+    "dataset2_repo": "tiny-aya-safety-dataset2",
+    "training_repo": "tiny-aya-safety-training-pairs",
+    "eval_repo": "tiny-aya-safety-eval-results"
+  },
+  "generation": {
+    "do_sample": false,
+    "max_new_tokens": 512,
+    "batch_size": 8,
+    "prompt_max_tokens": 1024,
+    "dtype": "bfloat16"
+  },
+  "guard": {
+    "max_new_tokens": 64,
+    "batch_size": 8,
+    "truncation": false
+  },
+  "lora": {
+    "r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "restricted_target_modules": ["layers.18.mlp.down_proj"],
+    "broad_target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+    "epochs": 1,
+    "batch_size": 1,
+    "learning_rate": 0.0001,
+    "max_len": 768
+  }
+}
