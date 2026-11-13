@@ -17,7 +17,12 @@ ADAPTERS = {
         "what": "a LoRA adapter on **one matrix**, layer 18's MLP output projection (`model.layers.18.mlp.down_proj`)",
         "targets": "`layers.18.mlp.down_proj`", "params": "208,896", "size": "0.8 MB",
         "why": "Layer 18 was chosen by activation analysis (SafeTune refusal-direction extraction and "
-               "safety-neuron ranking; top-5 in 30/30 bootstrap resamples in both English and Japanese).",
+               "safety-neuron ranking; top-5 in 30/30 bootstrap resamples in both English and Japanese). "
+               "A follow-up control trained the same adapter on layers 9, 15 and 30 (two seeds each): middle "
+               "layers worked about as well, and layer 9 matched layer 18, so the benefit comes from restricting "
+               "the update to one middle-layer matrix rather than from this particular layer. Two seeded retrains "
+               "of this adapter gave 1.7-3.4% unsafe and 22.5-25.0% needless refusals; this published run "
+               "(0.9%, 20.0%) was the most favourable of three.",
         "summary": "Both adapters remove nearly all unsafe answers; this one keeps more harmless prompts "
                    "answered (16 vs 29 needless refusals out of 80) and keeps answers longer.",
     },
@@ -171,7 +176,8 @@ The `rejected` column contains deliberately harmful completions.""",
                  "| `metrics.json`, `RESULTS_TABLES.md`, `figures/` | every reported metric, recomputed from the answers |\n"
                  "| `pipeline1_baseline_mh_stats.json`, `pipeline2_results.json`, `pipeline2_prompts_v2.json`, `pipeline4_results.json`, `pipeline5_results.json` | per-step outputs of the original run |\n"
                  "| `executed_notebooks/` | the five notebooks with all outputs from the 2026-11-12 run (logs and traces) |\n"
-                 "| `MANIFEST.sha256` | hashes of the original artifacts |",
+                 "| `MANIFEST.sha256` | hashes of the original artifacts |\n"
+                 "| `layer_control/` | follow-up: the same one-matrix adapter on layers 18, 15, 9 and 30 with two seeds each: answers + verdicts per arm, adapters with training logs, tables, figure, run log |",
         "configs": [("validation_answers", "pipeline5_answers.jsonl")],
         "body": """Answers were generated with greedy decoding (up to 512 new tokens, bf16) by Tiny Aya Water and by
 Tiny Aya Water with each adapter merged in, and judged by Qwen3Guard-Gen-0.6B (bf16, greedy, 64

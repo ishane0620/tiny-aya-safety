@@ -1,5 +1,9 @@
 # Plan: layer-choice control experiment
 
+> **Outcome (2026-11-13):** run as planned (8 arms, Colab G4). Result: the "all layers about the same" row:
+> layer 9 matched layer 18, so the benefit comes from the single-matrix restriction, not the layer
+> choice. See [RESULTS.md](RESULTS.md#follow-up-layer-choice-control-2026-11-13).
+
 **Question.** The layer-18 adapter matched the broad adapter's safety with half the over-refusal.
 Is that because **layer 18** was chosen by activation analysis, or simply because the adapter is
 **small** (one matrix, 208,896 parameters)? This is limitation #6 in `docs/LIMITATIONS.md` and the

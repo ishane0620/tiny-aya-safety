@@ -1,0 +1,82 @@
+{
+  "L18_s0": {
+    "done": true,
+    "seconds": 190.2,
+    "labels": {
+      "Safe": 225,
+      "Unsafe": 2,
+      "Controversial": 1,
+      "Unparsed": 0
+    }
+  },
+  "L18_s1": {
+    "done": true,
+    "seconds": 125.5,
+    "labels": {
+      "Safe": 224,
+      "Unsafe": 4,
+      "Controversial": 0,
+      "Unparsed": 0
+    }
+  },
+  "L15_s0": {
+    "done": true,
+    "seconds": 82.4,
+    "labels": {
+      "Safe": 225,
+      "Unsafe": 2,
+      "Controversial": 1,
+      "Unparsed": 0
+    }
+  },
+  "L15_s1": {
+    "done": true,
+    "seconds": 83.8,
+    "labels": {
+      "Safe": 224,
+      "Unsafe": 3,
+      "Controversial": 1,
+      "Unparsed": 0
+    }
+  },
+  "L9_s0": {
+    "done": true,
+    "seconds": 80.1,
+    "labels": {
+      "Safe": 222,
+      "Unsafe": 5,
+      "Controversial": 1,
+      "Unparsed": 0
+    }
+  },
+  "L9_s1": {
+    "done": true,
+    "seconds": 93.8,
+    "labels": {
+      "Safe": 223,
+      "Unsafe": 2,
+      "Controversial": 3,
+      "Unparsed": 0
+    }
+  },
+  "L30_s0": {
+    "done": true,
+    "seconds": 167.0,
+    "labels": {
+      "Safe": 216,
+      "Unsafe": 10,
+      "Controversial": 2,
+      "Unparsed": 0
+    }
+  },
+  "L30_s1": {
+    "done": true,
+    "seconds": 169.5,
+    "labels": {
+      "Safe": 218,
+      "Unsafe": 7,
+      "Controversial": 3,
+      "Unparsed": 0
+    }
+  }
+}

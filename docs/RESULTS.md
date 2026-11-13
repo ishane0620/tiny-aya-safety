@@ -47,10 +47,40 @@ increase in needless refusals and much longer helpful answers. This supports, on
 idea that a targeted intervention generalizes "refuse harmful requests" with less spill-over into
 "refuse everything that looks like a harmful request".
 
-It does not show that layer 18 is special. We did not train restricted adapters on other layers, so
-some of the advantage may come simply from the much smaller adapter (fewer parameters, less capacity
-to overfit 195 examples) rather than from the chosen location. A control with a randomly chosen
-layer is the most important missing experiment.
+It does not show that layer 18 is special, and the follow-up control below shows it is not: the
+advantage comes from restricting the update to one middle-layer matrix.
+
+## Follow-up: layer-choice control (2026-11-13)
+
+Plan and decision rule, written before running: [`LAYER_CONTROL_PLAN.md`](LAYER_CONTROL_PLAN.md).
+The same one-matrix adapter (`layers.N.mlp.down_proj`, 208,896 parameters for every N), the same 195
+pairs and settings, trained on four layers with two fixed seeds each and evaluated on the same 228
+prompts (Colab G4; ~3 minutes per arm). Full tables:
+[`results/layer_control/LAYER_CONTROL_TABLES.md`](../results/layer_control/LAYER_CONTROL_TABLES.md).
+
+| Layer | Role | Unsafe, decline (seed 0 / 1) | Needless refusals (seed 0 / 1) | Answer length (mean) | Unsafe answers fixed vs original (seed 0 / 1, of 12) |
+|---:|---|---:|---:|---:|---:|
+| 18 | top-ranked by activation analysis | 1.7% / 3.4% | 25.0% / 22.5% | 670 | 10 / 8 |
+| 15 | runner-up | 1.7% / 2.5% | 28.8% / 28.8% | 360 | 11 / 10 |
+| 9 | never in the top 5 | 4.2% / 1.7% | 17.5% / 18.8% | 392 | 10 / 9 |
+| 30 | never in the top 5 | 7.8% / 6.0% | 13.8% / 12.5% | 1,025 | 5 / 5 |
+| 18 (published, no fixed seed) | | 0.9% | 20.0% | 700 | 10 |
+| broad (all layers) | reference | 0.8% | 36.3% | 292 | 11 |
+
+**Reading against the pre-registered rule.** Layer 18 did *not* have fewer needless refusals than the
+controls at equal safety: layer 9 had fewer (prompt-level comparisons with the same seed, p = 0.11
+and 0.51; seed-bootstrap differences −7.5 and −3.8 points, CIs touching zero) at similar safety.
+Layer 30 refused least but was a weak fix (5 of 12 unsafe answers fixed, not significant against the
+original model), sitting further along the same trade-off rather than beating it. The outcome is
+the "same performance" row of the plan: **the benefit over broad fine-tuning comes from the small,
+single-matrix update in a middle layer, not from selecting layer 18 by activation analysis.**
+
+Two further observations:
+- All middle-layer adapters kept over-refusal below the broad adapter's, so the main comparison
+  (one matrix vs all layers) holds up across layers and seeds.
+- The published layer-18 adapter, trained once without a fixed seed, was the most favourable of
+  three layer-18 trainings. Its headline numbers (0.9% unsafe, 20% needless refusals) should be read
+  as one draw; the two seeded retrains averaged 2.5% and 23.8%.
 
 ## Breakdown highlights
 

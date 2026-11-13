@@ -52,10 +52,13 @@ unit, the restricted adapter's safety gain is −8.8 points (95% CI −14.8 to �
 over-refusal cost +10 points (CI +2.5 to +19.1), against +26 points (CI +17 to +36) for the broad
 adapter.
 
-On this validation sample, confining the update to one activation-selected layer gave the same
-safety gain at about half the over-refusal cost, with an adapter 145 times smaller. These are
-automatic-judge results on a validation set enriched for hard cases, not human-reviewed or heldout
-results, and we have not yet separated the effect of layer choice from adapter size. All code,
+On this validation sample, confining the update to one matrix gave the same safety gain at about
+half the over-refusal cost, with an adapter 145 times smaller. A control that trained the same
+adapter on other layers (two seeds each) showed that middle layers perform similarly: a layer our
+analysis never ranked matched layer 18, so the gain comes from the single-matrix restriction rather
+than the activation-based layer choice, and the published layer-18 run was a favourable seed. These
+are automatic-judge results on a validation set enriched for hard cases, not human-reviewed or
+heldout results. All code,
 adapters, data, answers and executed notebooks are public, and every number can be recomputed on a
 CPU from the released answers.
 
@@ -88,7 +91,8 @@ Checks actually run for this release (2026-11-12/13):
 | Prompt selection rebuilt from the published Dataset2 table | `scripts/build_sampling_pools.py`, `scripts/build_pipeline2_prompts.py` | all 4 prompt files byte-identical to the originals |
 | Seed-disjoint splits | `tests/test_data_integrity.py` | training = 195 tune rows, validation = 228 analysis rows, 0 shared seeds, 0 shared texts, 0 heldout rows |
 | Adapter structure vs base config | safetensors + `AutoConfig` (revision pinned) | shapes, targets, 208,896 / 30,228,480 parameters |
-| Unit and integration tests | `pytest`, clean venv | 53 passed |
+| Unit and integration tests | `pytest`, clean venv | 59 passed |
+| **Layer-choice control** (follow-up): one-matrix LoRA on layers 18, 15, 9, 30 × 2 seeds, full 228-prompt evaluation | fresh Colab runtime, G4, `scripts/run_layer_control.py` | 8/8 arms trained and evaluated; layer 18 not better than a never-ranked layer (9); results in `results/layer_control/` |
 | Hugging Face release is public | anonymous `huggingface_hub` client, no token | 6 repos public and un-gated, 2 public collections with all items; `pipeline5_answers.jsonl` downloads with the original SHA-256; Space running |
 | Demo Space renders | browser, live Space URL | data loads (HTTP 200), headline table and 228 prompts shown |
 | Notebooks 01 and 06 (sections 1–4) execute | local CPU, `nbconvert --execute` | no errors |

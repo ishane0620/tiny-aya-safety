@@ -42,7 +42,8 @@ harmful-US groups, English and Japanese (48–60 per group).
 **What this is and is not.** This is a correlational activation analysis: layer 18 is where the
 harmful/harmless difference is most consistently expressed in MLP weights. It does not show that
 layer 18 *causes* refusal (no ablation or patching was done), and CircuitKIT's causal circuit
-discovery was not used.
+discovery was not used. A later control (section 6) found that a one-matrix adapter on layer 9, which
+this analysis never ranked, works about as well as one on layer 18.
 
 ## 3. Training data (CuratorKIT + Qwen3Guard)
 
@@ -106,3 +107,12 @@ batch size 8. Qwen3Guard-Gen-0.6B (bf16, greedy, 64 tokens, no truncation) label
 - Seed-level robustness: seed-cluster bootstrap 95% CIs and a seed-level sign test, because
   prompt variants of one seed are correlated.
 - US-vs-neutral Mantel–Haenszel odds ratio, as in step 1.
+
+## 6. Follow-up: layer-choice control
+
+To separate *where* the adapter is from *how small* it is, the restricted adapter was retrained,
+unchanged except for its location, on layer 18 and on layers 15 (runner-up), 9 and 30 (never in the
+top 5), with two fixed seeds each (`torch.manual_seed` for the LoRA initialisation and data order).
+Each arm was evaluated exactly as in step 5; the original model's answers were reused. Code:
+`src/tiny_aya_safety/training.py` (pipeline 4's loop as a function), `scripts/run_layer_control.py`,
+`scripts/analyze_layer_control.py`, notebook 07. Results: [RESULTS.md](RESULTS.md).

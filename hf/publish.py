@@ -61,6 +61,8 @@ def stage(ns):
         if key == "eval_repo":
             shutil.copytree(REPO / "results/figures", d / "figures")
             shutil.copytree(REPO / "notebooks/executed", d / "executed_notebooks")
+            if (REPO / "results/layer_control").exists():
+                shutil.copytree(REPO / "results/layer_control", d / "layer_control")
         (d / "README.md").write_text(dataset_card(key, ns, NAMES), encoding="utf-8")
         repos[NAMES[key]] = ("dataset", d)
     # --- static Space: browse the saved answers (no model runs there)

@@ -13,6 +13,13 @@ refusals rose from 10% to **20%**, versus **36%** for the broad adapter. All num
 Qwen3Guard judgments on 228 validation prompts whose source requests were never used for training;
 the untouched heldout split and human review are still to come.
 
+**Follow-up: does the layer matter?** We retrained the same one-matrix adapter on layer 18 and on
+layers 15, 9 and 30, two seeds each. Every middle-layer adapter (9, 15, 18) removed most unsafe
+answers, and every one-matrix adapter over-refused less than the broad one; but layer 9, which our
+activation analysis never ranked, did as well as layer 18. The benefit comes from **restricting the
+update to a single middle-layer matrix**, not from choosing layer 18 by activation analysis
+([details](#does-the-layer-matter-follow-up-control)).
+
 | Open in Colab | Notebook | Needs |
 |---|---|---|
 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ishane0620/tiny-aya-safety/blob/main/notebooks/06_explore_results.ipynb) | **06 · Explore results (start here)**: recompute every metric, read every answer, try your own prompt | CPU (GPU for own prompts) |
@@ -110,7 +117,8 @@ matrices: two thin matrices whose product is added to the original one (here ran
 2048×11008 matrix gets a correction built from 2048×16 + 16×11008 numbers). The **broad** adapter
 adds such corrections to all seven attention and MLP matrices in all 36 layers (30.2 million
 numbers). The **restricted** adapter adds one, to layer 18's MLP output matrix (`down_proj`), the
-layer our activation analysis pointed to: 208,896 numbers, 145 times fewer. Same data, same
+layer our activation analysis pointed to (a later control showed other middle layers work about as well):
+208,896 numbers, 145 times fewer. Same data, same
 training; the only difference is how much of the model may change.
 
 ## Results
@@ -142,6 +150,32 @@ doubles needless refusals and makes the model more cautious on borderline reques
 better trade-off than broad fine-tuning, not a cost-free fix.
 
 ![Trade-off](results/figures/tradeoff.png)
+
+### Does the layer matter? (follow-up control)
+
+Same one-matrix adapter (208,896 parameters), same data and settings, on four layers with two
+training seeds each ([notebook 07](notebooks/07_layer_control.ipynb),
+[full tables](results/layer_control/LAYER_CONTROL_TABLES.md)):
+
+| Layer (mean of 2 seeds) | Why chosen | Unsafe, decline | Needless refusals | Harmless answer length |
+|---|---|---:|---:|---:|
+| 18 | top-ranked by activation analysis | 2.5% | 23.8% | 670 |
+| 15 | runner-up | 2.1% | 28.8% | 360 |
+| 9 | never in the top 5 | 3.0% | 18.1% | 392 |
+| 30 | never in the top 5 | 6.9% | 13.1% | 1,025 |
+| *broad (reference)* | | *0.8%* | *36.3%* | *292* |
+
+![Layer control](results/layer_control/layer_control.png)
+
+- **The activation-selected layer was not decisive.** Layer 9 reached similar safety with no more
+  needless refusals than layer 18 (prompt-level differences not significant, p = 0.11 and 0.51),
+  though with shorter answers. Layer 18 kept harmless answers longest among the middle layers.
+- **Too late a layer barely fixes anything.** Layer 30 changed few answers (unsafe 6.9%; not
+  significant against the original model).
+- **Restricting to one matrix is what helps.** Every one-matrix adapter over-refused less than the
+  broad adapter (12.5–28.8% vs 36.3%); middle-layer ones did so at near-broad safety.
+- **Seeds matter.** Retraining layer 18 gave 1.7% and 3.4% unsafe and 25.0% and 22.5% needless
+  refusals; the published adapter (0.9%, 20.0%) was the most favourable of three runs.
 
 ## Use the adapters
 
@@ -182,8 +216,9 @@ The executed notebooks from the original run, with all outputs, are in
   heldout split has not been evaluated.
 - **Small counts.** The safety gain rests on about 11 unsafe answers at baseline.
 - **Helpfulness is measured crudely**, by refusals and answer length, not answer quality.
-- **Layer choice is correlational**, from activation statistics; we did not show layer 18 is causally
-  necessary.
+- **Layer choice was not decisive.** A control with layers 9, 15 and 30 showed the benefit comes from
+  restricting to one middle-layer matrix, not from the activation-selected layer itself.
+- **Seed variance is real**: the published layer-18 adapter was the best of three trainings.
 
 Details: [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md).
 

@@ -1,0 +1,101 @@
+8 arms, 195 training pairs, 228 validation prompts -> /content/outputs/layer_control
+[L18_s0] training
+W1113 06:13:10.476000 1142 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1113 06:13:10.493000 1142 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [00:27<00:27, 27.91s/it]Fetching 2 files: 100%|██████████| 2/2 [00:27<00:00, 13.96s/it]
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   7%|▋         | 21/290 [00:00<00:01, 205.05it/s]Loading weights:  32%|███▏      | 93/290 [00:00<00:00, 499.73it/s]Loading weights:  57%|█████▋    | 165/290 [00:00<00:00, 597.02it/s]Loading weights:  83%|████████▎ | 240/290 [00:00<00:00, 656.17it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 613.86it/s]
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794550426.034516    1142 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1794550426.068434    1142 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI AVX512_BF16 AVX_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794550427.496167    1142 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1794550427.496493    1142 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+    step 25: loss=2.0332
+    step 50: loss=0.5508
+    step 75: loss=0.9580
+    step 100: loss=1.2506
+    step 125: loss=1.0265
+    step 150: loss=0.7421
+    step 175: loss=0.5920
+[L18_s0] trained: 208,896 params, loss 1.205 -> 0.700, 13.4s
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:  90%|█████████ | 280/311 [00:00<00:00, 2799.56it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 2900.72it/s]
+[L18_s0] done in 190.2s: {'Safe': 225, 'Unsafe': 2, 'Controversial': 1, 'Unparsed': 0}
+[L18_s1] training
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   9%|▉         | 27/290 [00:00<00:01, 261.97it/s]Loading weights:  34%|███▍      | 99/290 [00:00<00:00, 522.99it/s]Loading weights:  59%|█████▉    | 172/290 [00:00<00:00, 608.22it/s]Loading weights:  84%|████████▍ | 245/290 [00:00<00:00, 649.54it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 620.01it/s]
+    step 25: loss=1.4716
+    step 50: loss=1.1920
+    step 75: loss=0.7286
+    step 100: loss=1.1604
+    step 125: loss=1.0768
+    step 150: loss=0.9939
+    step 175: loss=0.9438
+[L18_s1] trained: 208,896 params, loss 1.225 -> 0.692, 12.5s
+[L18_s1] done in 125.5s: {'Safe': 224, 'Unsafe': 4, 'Controversial': 0, 'Unparsed': 0}
+[L15_s0] training
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   7%|▋         | 21/290 [00:00<00:01, 205.84it/s]Loading weights:  32%|███▏      | 93/290 [00:00<00:00, 504.45it/s]Loading weights:  57%|█████▋    | 166/290 [00:00<00:00, 606.57it/s]Loading weights:  83%|████████▎ | 241/290 [00:00<00:00, 662.68it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 616.45it/s]
+    step 25: loss=2.0649
+    step 50: loss=0.5296
+    step 75: loss=0.7958
+    step 100: loss=1.1315
+    step 125: loss=0.7622
+    step 150: loss=0.6634
+    step 175: loss=0.5158
+[L15_s0] trained: 208,896 params, loss 1.211 -> 0.655, 12.4s
+[L15_s0] done in 82.4s: {'Safe': 225, 'Unsafe': 2, 'Controversial': 1, 'Unparsed': 0}
+[L15_s1] training
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   7%|▋         | 21/290 [00:00<00:01, 205.95it/s]Loading weights:  32%|███▏      | 93/290 [00:00<00:00, 500.29it/s]Loading weights:  58%|█████▊    | 167/290 [00:00<00:00, 607.00it/s]Loading weights:  84%|████████▍ | 243/290 [00:00<00:00, 660.08it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 615.60it/s]
+    step 25: loss=1.4776
+    step 50: loss=1.1943
+    step 75: loss=0.6080
+    step 100: loss=1.0102
+    step 125: loss=0.9281
+    step 150: loss=0.8416
+    step 175: loss=0.8921
+[L15_s1] trained: 208,896 params, loss 1.239 -> 0.637, 11.9s
+[L15_s1] done in 83.8s: {'Safe': 224, 'Unsafe': 3, 'Controversial': 1, 'Unparsed': 0}
+[L9_s0] training
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   7%|▋         | 20/290 [00:00<00:01, 199.88it/s]Loading weights:  32%|███▏      | 92/290 [00:00<00:00, 502.01it/s]Loading weights:  57%|█████▋    | 165/290 [00:00<00:00, 596.49it/s]Loading weights:  83%|████████▎ | 241/290 [00:00<00:00, 660.26it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 614.03it/s]
+    step 25: loss=1.9780
+    step 50: loss=0.5346
+    step 75: loss=0.8815
+    step 100: loss=1.2120
+    step 125: loss=1.0269
+    step 150: loss=0.7414
+    step 175: loss=0.5742
+[L9_s0] trained: 208,896 params, loss 1.208 -> 0.659, 12.8s
+[L9_s0] done in 80.1s: {'Safe': 222, 'Unsafe': 5, 'Controversial': 1, 'Unparsed': 0}
+[L9_s1] training
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   7%|▋         | 21/290 [00:00<00:01, 203.90it/s]Loading weights:  32%|███▏      | 93/290 [00:00<00:00, 500.30it/s]Loading weights:  57%|█████▋    | 165/290 [00:00<00:00, 599.15it/s]Loading weights:  83%|████████▎ | 240/290 [00:00<00:00, 656.99it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 613.11it/s]
+    step 25: loss=1.4536
+    step 50: loss=1.1925
+    step 75: loss=0.6742
+    step 100: loss=1.0197
+    step 125: loss=0.8540
+    step 150: loss=0.8112
+    step 175: loss=0.8114
+[L9_s1] trained: 208,896 params, loss 1.224 -> 0.634, 12.7s
+[L9_s1] done in 93.8s: {'Safe': 223, 'Unsafe': 2, 'Controversial': 3, 'Unparsed': 0}
+[L30_s0] training
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   7%|▋         | 21/290 [00:00<00:01, 203.75it/s]Loading weights:  32%|███▏      | 93/290 [00:00<00:00, 498.64it/s]Loading weights:  57%|█████▋    | 165/290 [00:00<00:00, 597.42it/s]Loading weights:  84%|████████▍ | 243/290 [00:00<00:00, 660.61it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 613.25it/s]
+    step 25: loss=1.9218
+    step 50: loss=0.5486
+    step 75: loss=0.9663
+    step 100: loss=1.4350
+    step 125: loss=1.3138
+    step 150: loss=1.1259
+    step 175: loss=0.8139
+[L30_s0] trained: 208,896 params, loss 1.178 -> 0.853, 12.7s
+[L30_s0] done in 167.0s: {'Safe': 216, 'Unsafe': 10, 'Controversial': 2, 'Unparsed': 0}
+[L30_s1] training
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   7%|▋         | 20/290 [00:00<00:01, 199.45it/s]Loading weights:  32%|███▏      | 92/290 [00:00<00:00, 502.08it/s]Loading weights:  57%|█████▋    | 165/290 [00:00<00:00, 597.04it/s]Loading weights:  83%|████████▎ | 240/290 [00:00<00:00, 656.45it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 614.60it/s]
+    step 25: loss=1.4254
+    step 50: loss=1.1915
+    step 75: loss=0.7638
+    step 100: loss=1.1823
+    step 125: loss=1.1202
+    step 150: loss=1.0668
+    step 175: loss=0.9667
+[L30_s1] trained: 208,896 params, loss 1.206 -> 0.838, 12.0s
+[L30_s1] done in 169.5s: {'Safe': 218, 'Unsafe': 7, 'Controversial': 3, 'Unparsed': 0}
+ALL ARMS DONE
