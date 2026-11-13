@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiny Aya Safety Explorer</title>
+<style>
+  :root { --bg:#fbfbf9; --fg:#1f1f1d; --muted:#6b6a64; --line:#e3e1d9; --card:#fff;
+          --orig:#888780; --res:#1D9E75; --broad:#7F77DD; --bad:#A32D2D; --badbg:#FCEBEB; --okbg:#E1F5EE; --ok:#085041; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1b1b19; --fg:#ecebe5; --muted:#a3a29b; --line:#3a3936; --card:#242422; --badbg:#501313; --bad:#F7C1C1; --okbg:#04342C; --ok:#9FE1CB; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width:1100px; margin:0 auto; padding:24px 16px 64px; }
+  h1 { font-size:24px; font-weight:600; margin:0 0 4px; }
+  h2 { font-size:18px; font-weight:600; margin:32px 0 8px; }
+  .sub { color:var(--muted); margin:0 0 16px; }
+  .note { font-size:13px; color:var(--muted); border-left:3px solid var(--line); padding:4px 10px; margin:12px 0; }
+  table { border-collapse:collapse; width:100%; background:var(--card); }
+  th, td { border-bottom:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+  th { font-size:13px; color:var(--muted); font-weight:600; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  .wrap { overflow-x:auto; }
+  .filters { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:8px 0 12px; }
+  select, input { font:inherit; padding:5px 8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--fg); }
+  .grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; }
+  @media (max-width:760px) { .grid { grid-template-columns:1fr; } }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px; }
+  .prompt { white-space:pre-wrap; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px; margin:8px 0; }
+  .ans { white-space:pre-wrap; font-size:13.5px; max-height:340px; overflow:auto; margin-top:6px; }
+  .tag { display:inline-block; font-size:12px; padding:1px 8px; border-radius:999px; margin-right:4px; background:var(--okbg); color:var(--ok); }
+  .tag.bad { background:var(--badbg); color:var(--bad); }
+  .tag.neutral { background:transparent; border:1px solid var(--line); color:var(--muted); }
+  .m-baseline { border-top:3px solid var(--orig); } .m-restricted { border-top:3px solid var(--res); } .m-broad { border-top:3px solid var(--broad); }
+  .meta { font-size:13px; color:var(--muted); }
+  button { font:inherit; padding:5px 12px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--fg); cursor:pointer; }
+  img { max-width:100%; border:1px solid var(--line); border-radius:8px; background:#fff; }
+  a { color:var(--res); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Tiny Aya Safety Explorer</h1>
+  <p class="sub">Saved outputs of Tiny Aya Water before and after layer-restricted vs broad safety LoRA,
+    on 228 Japanese/English validation prompts. Every answer and verdict shown here is a genuine
+    output of the experiment (no live model). <a href="https://github.com/ishane0620/tiny-aya-safety">Code and write-up</a>.</p>
+  <p class="note">Content warning: the prompts are jailbreak-style requests about crime, violence, self-harm and similar
+    topics, and a few answers were judged unsafe. Labels come from the automatic judge Qwen3Guard-Gen-0.6B and have
+    not been reviewed by humans. Validation split, not the final heldout test.</p>
+
+  <h2>Headline metrics</h2>
+  <div class="wrap"><table id="headline"><thead><tr><th>Metric</th><th>Original</th><th>Restricted LoRA (layer 18)</th><th>Broad LoRA (all layers)</th></tr></thead><tbody></tbody></table></div>
+  <p><img src="figures/tradeoff.png" alt="Scatter plot: unsafe-answer rate against needless-refusal rate for the three models" width="560"></p>
+
+  <h2>Compare the three models on one prompt</h2>
+  <div class="filters">
+    <label>Language <select id="f-language"><option value="">all</option><option>en</option><option>ja</option></select></label>
+    <label>Culture <select id="f-culture"><option value="">all</option><option>us</option><option>neutral</option></select></label>
+    <label>Technique <select id="f-framing"><option value="">all</option><option value="control">direct</option><option value="rp">role-play</option><option value="fc">fiction</option><option value="rs">refusal suppression</option></select></label>
+    <label>Type <select id="f-kind"><option value="">all</option><option value="harmful">harmful request</option><option value="twin">harmless twin</option></select></label>
+    <label>Show <select id="f-change"><option value="">all prompts</option><option value="fixed">became safe</option><option value="unsafe">any unsafe answer</option><option value="newref">newly refused (twins)</option></select></label>
+    <span id="count" class="meta"></span>
+  </div>
+  <div class="filters"><button id="prev">← previous</button><button id="next">next →</button><span id="pos" class="meta"></span></div>
+  <div id="meta" class="meta"></div>
+  <div id="prompt" class="prompt"></div>
+  <div class="grid" id="answers"></div>
+</main>
+<script>
+const MODELS = [["baseline", "Original"], ["restricted", "Restricted LoRA (layer 18)"], ["broad", "Broad LoRA (all layers)"]];
+const TECH = { control: "direct", rp: "role-play", fc: "fiction", rs: "refusal suppression" };
+let byId = {}, ids = [], view = [], pos = 0;
+
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+function pct(x) { return (100 * x).toFixed(1) + "%"; }
+
+async function load() {
+  const [txt, metrics] = await Promise.all([fetch("data/pipeline5_answers.jsonl").then(r => r.text()),
+                                            fetch("data/metrics.json").then(r => r.json())]);
+  for (const line of txt.split("\n")) {
+    if (!line.trim()) continue;
+    const r = JSON.parse(line);
+    (byId[r.id] = byId[r.id] || {})[r.model] = r;
+  }
+  ids = Object.keys(byId);
+  const h = metrics.headline, tb = document.querySelector("#headline tbody");
+  [["Unsafe answers, harmful prompts to decline", "unsafe_rate_decline", "unsafe_decline"],
+   ["Needless refusals, harmless twins", "needless_refusal_rate_twins", "needless_refusal_twins"],
+   ["Refusals, borderline answer-carefully prompts", "refusal_rate_answer_carefully", "refusal_answer_carefully"]]
+    .forEach(([t, rate, cnt]) => {
+      const tr = el("tr"); tr.append(el("td", "", t));
+      for (const [m] of MODELS) tr.append(el("td", "num", `${pct(h[m][rate])} (${h[m][cnt]})`));
+      tb.append(tr);
+    });
+  const tr = el("tr"); tr.append(el("td", "", "Average harmless-answer length (characters)"));
+  for (const [m] of MODELS) tr.append(el("td", "num", Math.round(h[m].mean_harmless_answer_chars).toLocaleString()));
+  tb.append(tr);
+  document.querySelectorAll("select").forEach(s => s.addEventListener("change", () => { pos = 0; apply(); }));
+  document.getElementById("prev").onclick = () => { if (view.length) { pos = (pos - 1 + view.length) % view.length; show(); } };
+  document.getElementById("next").onclick = () => { if (view.length) { pos = (pos + 1) % view.length; show(); } };
+  apply();
+}
+
+function apply() {
+  const f = k => document.getElementById("f-" + k).value;
+  view = ids.filter(id => {
+    const b = byId[id].baseline, r = byId[id].restricted, w = byId[id].broad;
+    if (f("language") && b.language !== f("language")) return false;
+    if (f("culture") && b.culture !== f("culture")) return false;
+    if (f("framing") && b.framing !== f("framing")) return false;
+    if (f("kind") && b.kind !== f("kind")) return false;
+    const c = f("change");
+    if (c === "fixed" && !(b.unsafe === 1 && (r.unsafe === 0 || w.unsafe === 0))) return false;
+    if (c === "unsafe" && ![b, r, w].some(x => x.label === "Unsafe")) return false;
+    if (c === "newref" && !(b.kind === "twin" && b.refused === 0 && (r.refused === 1 || w.refused === 1))) return false;
+    return true;
+  });
+  document.getElementById("count").textContent = `${view.length} prompts`;
+  show();
+}
+
+function show() {
+  const pr = document.getElementById("prompt"), ans = document.getElementById("answers"), meta = document.getElementById("meta");
+  ans.replaceChildren();
+  if (!view.length) { pr.textContent = "No prompt matches these filters."; meta.textContent = ""; document.getElementById("pos").textContent = ""; return; }
+  const rows = byId[view[pos]], b = rows.baseline;
+  document.getElementById("pos").textContent = `${pos + 1} / ${view.length}`;
+  meta.textContent = `${b.language} · ${b.culture} framing · ${TECH[b.framing]} · ${b.kind === "twin" ? "harmless twin" : "harmful request"} · expected: ${b.expected.replace("_", " ")}`;
+  pr.textContent = b.prompt;
+  for (const [m, name] of MODELS) {
+    const r = rows[m], card = el("div", "card m-" + m);
+    card.append(el("strong", "", name), el("br"));
+    const lab = el("span", "tag" + (r.label === "Unsafe" ? " bad" : r.label === "Safe" ? "" : " neutral"), r.label);
+    const ref = el("span", "tag neutral", r.refused === 1 ? "refusal" : r.refused === 0 ? "answered" : "refusal: unclear");
+    card.append(lab, ref, el("div", "ans", r.answer));
+    ans.append(card);
+  }
+}
+load().catch(e => { document.getElementById("prompt").textContent = "Could not load data: " + e; });
+</script>
+</body>
+</html>

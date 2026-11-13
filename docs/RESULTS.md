@@ -28,7 +28,7 @@ other way round (p = 0.004). Answers to harmless prompts shrank from 1,072 chara
 | Restricted, unsafe rate (decline prompts, 41 seeds) | −8.8 pts | −14.8 to −3.8 | 9 / 0 |
 | Broad, unsafe rate | −9.6 pts | −14.7 to −4.9 | 11 / 0 |
 | Restricted, needless refusals (33 seeds) | +10.0 pts | +2.5 to +19.1 | 1 / 8 |
-| Broad, needless refusals | +26.2 pts | +17.1 to +36.2 | 0 / 16 |
+| Broad, needless refusals | +26.3 pts | +17.1 to +36.3 | 0 / 16 |
 
 **4. The cultural gap disappears, because unsafe answers disappear.** In the validation sample the
 original model's US-framed prompts were more often unsafe than neutral ones (Mantel–Haenszel OR 5.7,

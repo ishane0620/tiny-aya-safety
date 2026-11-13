@@ -51,7 +51,7 @@ def test_matches_original_pipeline5_mantel_haenszel(df):
 
 def test_committed_results_are_current(df):
     """results/metrics.json must equal a fresh recomputation (rerun scripts/compute_metrics.py)."""
-    fresh = json.loads(json.dumps(metrics.compute_all(df), default=float))
+    fresh = json.loads(json.dumps(metrics.jsonable(metrics.compute_all(df)), allow_nan=False))
     committed = json.loads((REPO / "results/metrics.json").read_text())
     committed.pop("source", None)
     assert fresh == committed

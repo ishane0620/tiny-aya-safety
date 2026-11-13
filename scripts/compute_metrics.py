@@ -22,8 +22,19 @@ LABELS = {"baseline": "Original", "restricted": "Restricted LoRA\n(layer 18)", "
 COLORS = {"baseline": "#888780", "restricted": "#1D9E75", "broad": "#7F77DD"}
 
 
+def r1(x):
+    """One decimal, rounding halves up (29/80 = 36.25% -> 36.3%), immune to float noise."""
+    from decimal import ROUND_HALF_UP, Decimal
+    return str((Decimal(str(round(x, 10))) * 100).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP))
+
+
+def signed(x):
+    v = r1(x)
+    return v if v.startswith("-") else "+" + v
+
+
 def pct(x):
-    return f"{100 * x:.1f}%"
+    return f"{r1(x)}%"
 
 
 def tables_md(m, df) -> str:
@@ -65,8 +76,8 @@ def tables_md(m, df) -> str:
     for arm in ("restricted", "broad"):
         for key, title in (("decline_unsafe", "unsafe rate, decline prompts"), ("twin_refused", "refusal rate, harmless twins")):
             b, s = m["seed_level"][arm][f"{key}_bootstrap"], m["seed_level"][arm][f"{key}_sign"]
-            lines.append(f"| {arm}: {title} | {b['n_prompts']} / {b['n_seeds']} | {100 * b['diff']:+.1f} pts | "
-                         f"[{100 * b['ci95_low']:+.1f}, {100 * b['ci95_high']:+.1f}] | {s['seeds_down']} / {s['seeds_up']} | {s['p_sign']:.2g} |")
+            lines.append(f"| {arm}: {title} | {b['n_prompts']} / {b['n_seeds']} | {signed(b['diff'])} pts | "
+                         f"[{signed(b['ci95_low'])}, {signed(b['ci95_high'])}] | {s['seeds_down']} / {s['seeds_up']} | {s['p_sign']:.2g} |")
 
     lines += ["", "## US vs neutral framing (Mantel-Haenszel, stratified by language, harmful prompts)", "",
               "| Model | odds ratio | p | n |", "|---|---:|---:|---:|"]
@@ -106,8 +117,8 @@ def figures(m, out: Path):
     for ax, (key, title, sub) in zip(axes, panels):
         vals = [100 * h[mm][key] for mm in metrics.MODELS]
         bars = ax.bar([LABELS[mm] for mm in metrics.MODELS], vals, color=[COLORS[mm] for mm in metrics.MODELS])
-        for b, v in zip(bars, vals):
-            ax.text(b.get_x() + b.get_width() / 2, v + 0.8, f"{v:.1f}%", ha="center", fontsize=10)
+        for b, v, mm in zip(bars, vals, metrics.MODELS):
+            ax.text(b.get_x() + b.get_width() / 2, v + 0.8, pct(h[mm][key]), ha="center", fontsize=10)
         ax.set_title(title, fontsize=11)
         ax.set_xlabel(sub, fontsize=9, color="#555")
         ax.set_ylim(0, max(vals) * 1.25 + 2)

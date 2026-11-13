@@ -17,7 +17,8 @@
     "broad_adapter": "tiny-aya-water-safety-lora-broad",
     "dataset2_repo": "tiny-aya-safety-dataset2",
     "training_repo": "tiny-aya-safety-training-pairs",
-    "eval_repo": "tiny-aya-safety-eval-results"
+    "eval_repo": "tiny-aya-safety-eval-results",
+    "space": "tiny-aya-safety-explorer"
   },
   "generation": {
     "do_sample": false,
@@ -35,8 +36,18 @@
     "r": 16,
     "lora_alpha": 32,
     "lora_dropout": 0.05,
-    "restricted_target_modules": ["layers.18.mlp.down_proj"],
-    "broad_target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+    "restricted_target_modules": [
+      "layers.18.mlp.down_proj"
+    ],
+    "broad_target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
     "epochs": 1,
     "batch_size": 1,
     "learning_rate": 0.0001,

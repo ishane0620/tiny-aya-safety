@@ -183,5 +183,20 @@ def compute_all(df: pd.DataFrame) -> dict:
     return out
 
 
+def jsonable(obj):
+    """Plain-JSON version of a metrics dict: numpy numbers -> float/int, NaN -> None (null),
+    so the file is valid JSON for browsers and other tools."""
+    if isinstance(obj, dict):
+        return {str(k): jsonable(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [jsonable(v) for v in obj]
+    if isinstance(obj, (np.integer,)):
+        return int(obj)
+    if isinstance(obj, (float, np.floating)):
+        return None if np.isnan(obj) else float(obj)
+    return obj
+
+
 def to_json(obj, path):
-    Path(path).write_text(json.dumps(obj, indent=2, default=float, ensure_ascii=False) + "\n", encoding="utf-8")
+    Path(path).write_text(json.dumps(jsonable(obj), indent=2, ensure_ascii=False, allow_nan=False) + "\n",
+                          encoding="utf-8")

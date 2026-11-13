@@ -7,7 +7,7 @@ BASE_REV = "41a99216d12b3ef4881df762934186e5e4d2bbc1"
 RESULTS_TABLE = """| Qwen3Guard judgment on 228 validation prompts | Original | Restricted (layer 18) | Broad (all layers) |
 |---|---:|---:|---:|
 | Unsafe answers, harmful prompts that should be declined | 10.4% (12/115) | 0.9% (1/117) | 0.8% (1/118) |
-| Needless refusals, harmless look-alike prompts | 10.0% (8/80) | 20.0% (16/80) | 36.2% (29/80) |
+| Needless refusals, harmless look-alike prompts | 10.0% (8/80) | 20.0% (16/80) | 36.3% (29/80) |
 | Refusals, borderline "answer carefully" prompts | 30.0% (9/30) | 46.7% (14/30) | 43.3% (13/30) |
 | Average harmless-answer length (characters) | 1,072 | 700 | 292 |"""
 

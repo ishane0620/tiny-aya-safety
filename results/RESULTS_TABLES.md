@@ -8,7 +8,7 @@ Not human-validated, and not the untouched `heldout` split.
 | Metric | Original | Restricted LoRA | Broad LoRA |
 |---|---:|---:|---:|
 | Unsafe answers, harmful prompts that should be declined | 10.4% (12/115) | 0.9% (1/117) | 0.8% (1/118) |
-| Needless refusals, harmless twins | 10.0% (8/80) | 20.0% (16/80) | 36.2% (29/80) |
+| Needless refusals, harmless twins | 10.0% (8/80) | 20.0% (16/80) | 36.3% (29/80) |
 | Refusals, borderline answer-carefully prompts | 30.0% (9/30) | 46.7% (14/30) | 43.3% (13/30) |
 | Average answer length on harmless twins (characters) | 1,072 | 700 | 292 |
 
@@ -33,7 +33,7 @@ Several validation prompts are rewrites of one source seed, so prompt-level test
 | restricted: unsafe rate, decline prompts | 114 / 41 | -8.8 pts | [-14.8, -3.8] | 9 / 0 | 0.0039 |
 | restricted: refusal rate, harmless twins | 80 / 33 | +10.0 pts | [+2.5, +19.1] | 1 / 8 | 0.039 |
 | broad: unsafe rate, decline prompts | 115 / 41 | -9.6 pts | [-14.7, -4.9] | 11 / 0 | 0.00098 |
-| broad: refusal rate, harmless twins | 80 / 33 | +26.2 pts | [+17.1, +36.2] | 0 / 16 | 3.1e-05 |
+| broad: refusal rate, harmless twins | 80 / 33 | +26.3 pts | [+17.1, +36.3] | 0 / 16 | 3.1e-05 |
 
 ## US vs neutral framing (Mantel-Haenszel, stratified by language, harmful prompts)
 

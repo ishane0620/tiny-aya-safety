@@ -173,13 +173,13 @@
       "n_rows": 145
     },
     "restricted": {
-      "or_mh": NaN,
+      "or_mh": null,
       "chi2_mh": 0.0002873563218390789,
       "p_mh": 0.9864752377211855,
       "n_rows": 147
     },
     "broad": {
-      "or_mh": NaN,
+      "or_mh": null,
       "chi2_mh": 0.0,
       "p_mh": 1.0,
       "n_rows": 148

@@ -63,6 +63,15 @@ def stage(ns):
             shutil.copytree(REPO / "notebooks/executed", d / "executed_notebooks")
         (d / "README.md").write_text(dataset_card(key, ns, NAMES), encoding="utf-8")
         repos[NAMES[key]] = ("dataset", d)
+    # --- static Space: browse the saved answers (no model runs there)
+    d = STAGE / NAMES["space"]
+    (d / "data").mkdir(parents=True)
+    shutil.copy(REPO / "demo/index.html", d / "index.html")
+    shutil.copy(REPO / "demo/README.md", d / "README.md")
+    shutil.copy(DATA / "results/pipeline5_answers.jsonl", d / "data/pipeline5_answers.jsonl")
+    shutil.copy(REPO / "results/metrics.json", d / "data/metrics.json")
+    shutil.copytree(REPO / "results/figures", d / "figures")
+    repos[NAMES["space"]] = ("space", d)
     return repos
 
 
@@ -81,12 +90,13 @@ def upload(ns, repos):
     urls = {}
     for name, (kind, d) in repos.items():
         rid = f"{ns}/{name}"
-        api.create_repo(rid, repo_type=kind, private=False, exist_ok=True)
+        api.create_repo(rid, repo_type=kind, private=False, exist_ok=True,
+                        **({"space_sdk": "static"} if kind == "space" else {}))
         api.upload_folder(repo_id=rid, repo_type=kind, folder_path=str(d),
                           commit_message="Publish post_train_2 artifacts (tiny-aya-safety)")
-        info = api.model_info(rid) if kind == "model" else api.dataset_info(rid)
-        assert not info.private and not info.gated, f"{rid} is not public and un-gated"
-        urls[name] = f"https://huggingface.co/{'datasets/' if kind == 'dataset' else ''}{rid}"
+        info = {"model": api.model_info, "dataset": api.dataset_info, "space": api.space_info}[kind](rid)
+        assert not info.private and not getattr(info, "gated", False), f"{rid} is not public and un-gated"
+        urls[name] = f"https://huggingface.co/{ {'model': '', 'dataset': 'datasets/', 'space': 'spaces/'}[kind] }{rid}"
         print("  published", urls[name])
     cols = {}
     for kind, title, desc in [
@@ -98,8 +108,8 @@ def upload(ns, repos):
         existing = [c for c in api.list_collections(owner=ns, limit=100) if c.title == title]
         col = existing[0] if existing else api.create_collection(title=title, namespace=ns, description=desc, private=False)
         for name, (k, _) in repos.items():
-            if k == kind:
-                api.add_collection_item(col.slug, item_id=f"{ns}/{name}", item_type=kind, exists_ok=True)
+            if k == kind or (kind == "model" and k == "space"):
+                api.add_collection_item(col.slug, item_id=f"{ns}/{name}", item_type=k, exists_ok=True)
         cols[kind] = f"https://huggingface.co/collections/{col.slug}"
         print("  collection", cols[kind])
     return urls, cols
@@ -119,6 +129,7 @@ def record(ns, urls, cols):
         f"  - Dataset2 prompts + baseline judgments: {urls[NAMES['dataset2_repo']]}",
         f"  - verified training pairs: {urls[NAMES['training_repo']]}",
         f"  - evaluation answers, metrics, logs: {urls[NAMES['eval_repo']]}",
+        f"- **Demo (static Space, saved outputs):** {urls[NAMES['space']]}",
         "<!-- HF_LINKS_END -->"])
     for path in [REPO / "README.md", REPO / "SUBMISSION.md", *(REPO / "docs").glob("*.md")]:
         if not path.exists():
