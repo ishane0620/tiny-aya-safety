@@ -88,13 +88,14 @@ Checks actually run for this release (2026-11-12/13):
 | Prompt selection rebuilt from the published Dataset2 table | `scripts/build_sampling_pools.py`, `scripts/build_pipeline2_prompts.py` | all 4 prompt files byte-identical to the originals |
 | Seed-disjoint splits | `tests/test_data_integrity.py` | training = 195 tune rows, validation = 228 analysis rows, 0 shared seeds, 0 shared texts, 0 heldout rows |
 | Adapter structure vs base config | safetensors + `AutoConfig` (revision pinned) | shapes, targets, 208,896 / 30,228,480 parameters |
-| Unit and integration tests | `pytest`, clean venv | 35 passed |
+| Unit and integration tests | `pytest`, clean venv | 53 passed |
 | Hugging Face release is public | anonymous `huggingface_hub` client, no token | 6 repos public and un-gated, 2 public collections with all items; `pipeline5_answers.jsonl` downloads with the original SHA-256; Space running |
 | Demo Space renders | browser, live Space URL | data loads (HTTP 200), headline table and 228 prompts shown |
 | Notebooks 01 and 06 (sections 1–4) execute | local CPU, `nbconvert --execute` | no errors |
 | Notebook 06 in a **fresh Colab runtime** (clones this public repo, no local files) | Colab CPU runtime via Colab CLI | 13/13 cells, 0 errors, headline numbers identical |
 | GPU smoke test of the **published** adapters (`scripts/smoke_test_adapters.py`) | fresh Colab runtime, Tesla T4, adapters and base model downloaded from Hugging Face | **passed**: both adapters load with PEFT onto the pinned base, change layer 18's weights (baseline unchanged), and generate English and Japanese answers that Qwen3Guard judges |
 | Notebook 05 full regeneration (684 answers) | fresh Colab runtime, Tesla T4 | **not completed**: setup, data loading and the reference statistics ran; the Colab connection dropped ~45 min into generating the original model's answers (T4 has no native bf16; ~8 min on a G4) |
-| Notebooks 02, 03, 04 re-executed after migration | — | **not re-run**; they differ from the executed originals only in file locations |
+| Notebooks 01–06 are runnable (static check, `tests/test_notebooks_runnable.py`) | clean CPU venv and full toolkit venv (SafeTune 0.1.16, CuratorKIT 0.1.24, AuditKIT 1.1.3, transformers 5.22.2, PEFT 0.21.2) | every cell parses, every input file resolves, every imported toolkit name exists |
+| Notebooks 02, 03, 04 fully re-executed after migration | — | **not re-run** (by decision); they differ from the executed originals only in file locations |
 | Human review of judgments | — | **not done** |
 | Heldout evaluation | — | **not done** |

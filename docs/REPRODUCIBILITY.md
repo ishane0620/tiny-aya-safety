@@ -21,7 +21,7 @@ git clone https://github.com/ishane0620/tiny-aya-safety && cd tiny-aya-safety
 python -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python scripts/compute_metrics.py   # rewrites results/ from data/results/pipeline5_answers.jsonl
 git diff --stat results/                      # should show no changes
-.venv/bin/python -m pytest -q                 # 35 tests
+.venv/bin/python -m pytest -q                 # 53 tests
 ```
 
 To also run the seed-split test and notebook 01 locally, download the Dataset2 table first:
