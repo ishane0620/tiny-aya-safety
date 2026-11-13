@@ -1,0 +1,15 @@
+{
+  "namespace": "isaac369369",
+  "repos": {
+    "tiny-aya-water-safety-lora-layer18": "https://huggingface.co/isaac369369/tiny-aya-water-safety-lora-layer18",
+    "tiny-aya-water-safety-lora-broad": "https://huggingface.co/isaac369369/tiny-aya-water-safety-lora-broad",
+    "tiny-aya-safety-dataset2": "https://huggingface.co/datasets/isaac369369/tiny-aya-safety-dataset2",
+    "tiny-aya-safety-training-pairs": "https://huggingface.co/datasets/isaac369369/tiny-aya-safety-training-pairs",
+    "tiny-aya-safety-eval-results": "https://huggingface.co/datasets/isaac369369/tiny-aya-safety-eval-results",
+    "tiny-aya-safety-explorer": "https://huggingface.co/spaces/isaac369369/tiny-aya-safety-explorer"
+  },
+  "collections": {
+    "model": "https://huggingface.co/collections/isaac369369/tiny-aya-water-safety-lora-adapters-6af671c237fdafbed3b7362a",
+    "dataset": "https://huggingface.co/collections/isaac369369/tiny-aya-safety-datasets-6af671c33b325a1767adb0a5"
+  }
+}

@@ -27,7 +27,7 @@ git diff --stat results/                      # should show no changes
 To also run the seed-split test and notebook 01 locally, download the Dataset2 table first:
 
 ```bash
-.venv/bin/python -c "from huggingface_hub import hf_hub_download as d; import shutil; [shutil.copy(d('<HF_NAMESPACE>/tiny-aya-safety-dataset2', f, repo_type='dataset'), 'data/dataset2/') for f in ['observations.parquet', 'matched_observations.parquet']]"
+.venv/bin/python -c "from huggingface_hub import hf_hub_download as d; import shutil; [shutil.copy(d('isaac369369/tiny-aya-safety-dataset2', f, repo_type='dataset'), 'data/dataset2/') for f in ['observations.parquet', 'matched_observations.parquet']]"
 ```
 
 Expected headline (from `results/RESULTS_TABLES.md`): unsafe answers on decline prompts 12/115,

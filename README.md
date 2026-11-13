@@ -24,8 +24,14 @@ the untouched heldout split and human review are still to come.
 
 **Published artifacts** (all public, un-gated; the base model itself stays at Cohere Labs):
 <!-- HF_LINKS_START -->
-- Model collection: *pending publication*
-- Dataset collection: *pending publication*
+- **Model collection:** https://huggingface.co/collections/isaac369369/tiny-aya-water-safety-lora-adapters-6af671c237fdafbed3b7362a
+  - restricted adapter (layer 18): https://huggingface.co/isaac369369/tiny-aya-water-safety-lora-layer18
+  - broad adapter (all layers): https://huggingface.co/isaac369369/tiny-aya-water-safety-lora-broad
+- **Dataset collection:** https://huggingface.co/collections/isaac369369/tiny-aya-safety-datasets-6af671c33b325a1767adb0a5
+  - Dataset2 prompts + baseline judgments: https://huggingface.co/datasets/isaac369369/tiny-aya-safety-dataset2
+  - verified training pairs: https://huggingface.co/datasets/isaac369369/tiny-aya-safety-training-pairs
+  - evaluation answers, metrics, logs: https://huggingface.co/datasets/isaac369369/tiny-aya-safety-eval-results
+- **Demo (static Space, saved outputs):** https://huggingface.co/spaces/isaac369369/tiny-aya-safety-explorer
 <!-- HF_LINKS_END -->
 
 ---
@@ -148,7 +154,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 base_id = "CohereLabs/tiny-aya-water"
 tok = AutoTokenizer.from_pretrained(base_id)
 model = AutoModelForCausalLM.from_pretrained(base_id, dtype=torch.bfloat16, device_map="auto")
-model = PeftModel.from_pretrained(model, "<HF_NAMESPACE>/tiny-aya-water-safety-lora-layer18")  # or ...-lora-broad
+model = PeftModel.from_pretrained(model, "isaac369369/tiny-aya-water-safety-lora-layer18")  # or ...-lora-broad
 msgs = [{"role": "user", "content": "日本の歴史について簡単に教えてください。"}]
 ids = tok.apply_chat_template(msgs, add_generation_prompt=True, return_tensors="pt").to(model.device)
 print(tok.decode(model.generate(ids, max_new_tokens=256, do_sample=False)[0][ids.shape[1]:], skip_special_tokens=True))

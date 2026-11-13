@@ -12,8 +12,14 @@
 - **GitHub (code, notebooks, write-up):** https://github.com/ishane0620/tiny-aya-safety
 - **Start here (Colab, CPU):** https://colab.research.google.com/github/ishane0620/tiny-aya-safety/blob/main/notebooks/06_explore_results.ipynb
 <!-- HF_LINKS_START -->
-- Model collection: *pending publication*
-- Dataset collection: *pending publication*
+- **Model collection:** https://huggingface.co/collections/isaac369369/tiny-aya-water-safety-lora-adapters-6af671c237fdafbed3b7362a
+  - restricted adapter (layer 18): https://huggingface.co/isaac369369/tiny-aya-water-safety-lora-layer18
+  - broad adapter (all layers): https://huggingface.co/isaac369369/tiny-aya-water-safety-lora-broad
+- **Dataset collection:** https://huggingface.co/collections/isaac369369/tiny-aya-safety-datasets-6af671c33b325a1767adb0a5
+  - Dataset2 prompts + baseline judgments: https://huggingface.co/datasets/isaac369369/tiny-aya-safety-dataset2
+  - verified training pairs: https://huggingface.co/datasets/isaac369369/tiny-aya-safety-training-pairs
+  - evaluation answers, metrics, logs: https://huggingface.co/datasets/isaac369369/tiny-aya-safety-eval-results
+- **Demo (static Space, saved outputs):** https://huggingface.co/spaces/isaac369369/tiny-aya-safety-explorer
 <!-- HF_LINKS_END -->
 
 ## Abstract
